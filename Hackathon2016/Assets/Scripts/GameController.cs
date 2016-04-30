@@ -50,4 +50,12 @@ public class GameController : MonoBehaviour
         players[players.Count - 1].CurrentColor = color;
         players[players.Count - 1].Setup(Helper.GetInformation(playerClass));
     }
+
+    public void RepositionPlayers()
+    {
+        //Position all the players currently connected
+        //one player: centerpoint of start and end
+        //two players: centerpoints between center and start/center and end
+        //three players:
+    }
 }
