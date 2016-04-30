@@ -254,6 +254,7 @@ public class GameController : MonoBehaviour
 
     public void Setup(string playerName, PlayerClass playerClass, int color)
     {
+        Debug.Log("Setup was called");
         int playerID = 1;
         //this will call on player connect
         OnPlayerConnect(playerID, playerClass, color, playerName);
