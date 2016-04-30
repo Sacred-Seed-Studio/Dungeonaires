@@ -117,7 +117,7 @@
             }
 
         // Send messages to AirConsole
-            function join(){ airconsole.message(AirConsole.SCREEN, {a: 0}); }
+            function join(){ /*airconsole.message(AirConsole.SCREEN, {a: 0});*/ goToScreen('setup'); }
             function setup(){ airconsole.message(AirConsole.SCREEN, {a: 1, b:{n:playerName, c:getIDFromClass(selectedClass), r:getIDFromColor(selectedColor)}}); }
             function ready(){ if(!readyForDungeon){ airconsole.message(AirConsole.SCREEN, {a: 2}); readyForDungeon = true; }}
             function attack(){ airconsole.message(AirConsole.SCREEN, {a: 3}); }
