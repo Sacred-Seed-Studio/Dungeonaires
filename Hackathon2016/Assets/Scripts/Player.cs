@@ -135,6 +135,15 @@ public class Player : MonoBehaviour, IAttackable
             //Debug.Log("Missed:  "+Time.time + " " + defenseTime + timeAtDefend);
         }
         Health -= amount;
-        if (Health < 0) Health = 0;
+        //if (Health < 0)
+        //{
+        //    Health = 0;
+        //    GameController.controller.KillPlayer(this);
+        //}
+    }
+
+    public bool HasDiedEh()
+    {
+        return Health <= 0;
     }
 }

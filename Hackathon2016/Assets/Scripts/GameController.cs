@@ -7,7 +7,7 @@ public class GameController : MonoBehaviour
     public static GameController controller;
 
     public int numberOfPlayers;
-    public List<Player> players;
+    public List<Player> players, deadPlayers;
 
     GameObject playerPrefab;
 
@@ -48,7 +48,7 @@ public class GameController : MonoBehaviour
         if (addPlayer && players.Count < 4)
         {
             addPlayer = false;
-            OnPlayerConnect(playerID, (PlayerClass)Random.Range(0, 4), playerColors[playerID], GetName());
+            OnPlayerConnect(playerID, (PlayerClass)Random.Range(0, 2), playerColors[playerID], GetName());
             playerID++;
         }
 
@@ -72,7 +72,7 @@ public class GameController : MonoBehaviour
         titleScreen.SetActive(true);
         while (players.Count != 4 && waitingForPlayers)
         {
-            Debug.Log("Waiting for more players to join!");
+            //Debug.Log("Waiting for more players to join!");
             //wait for new players to join (either 4, or all players have indicated they are ready to go)
             yield return null;
         }
@@ -134,7 +134,6 @@ public class GameController : MonoBehaviour
         {
             //currentEnemy.Health -= 100;
             // the enemy is still alive - wait for the players to get working
-            Debug.Log("Kill that enemy! " + currentEnemy.Health);
             yield return null;
         }
         currentEnemy.gameObject.SetActive(false);
@@ -228,5 +227,13 @@ public class GameController : MonoBehaviour
         string name = randomNames[Random.Range(0, randomNames.Count - 1)];
         randomNames.Remove(name);
         return name;
+    }
+
+    public void KillPlayer(Player playerToKill)
+    {
+        players.Remove(playerToKill);
+        deadPlayers.Add(playerToKill);
+        playerToKill.gameObject.SetActive(false);
+        RepositionPlayers();
     }
 }

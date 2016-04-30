@@ -36,7 +36,7 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        attack = true;
+        if (GameController.controller.players.Count > 0) attack = true;
         healthSlider.value = Health;
         if (attack && Time.time > nextAttack)
         {
@@ -84,6 +84,21 @@ public class Enemy : MonoBehaviour
         {
             p.TakeDamage(AttackPower);
         }
+
+        //check for player death here to avoid that error :)
+        foreach (Player p in GameController.controller.players)
+        {
+            if (p.HasDiedEh())
+            {
+                GameController.controller.deadPlayers.Add(p);
+            }
+        }
+        foreach (Player p in GameController.controller.deadPlayers)
+        {
+            GameController.controller.players.Remove(p);
+            p.gameObject.SetActive(false);
+        }
+
         //hit all players
         sr.color = Color.white;
         nextAttack = Time.time + attackCooldownTime;
