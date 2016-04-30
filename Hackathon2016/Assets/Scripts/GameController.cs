@@ -261,6 +261,7 @@ public class GameController : MonoBehaviour
 
     public void Ready(int playerID)
     {
+
     }
 
     public void Attack(int playerID)
