@@ -49,7 +49,7 @@ public class AirConsoleController : MonoBehaviour
     void OnMessageReceived(int device_id, JToken data)
     {
         int activePlayerID = AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id);
-        Debug.Log("Active player " + activePlayerID);
+        Debug.Log("Message recieved from device " + device_id + "  their player id is " + activePlayerID);
         int action = (int)data["a"];
 
         switch (action)

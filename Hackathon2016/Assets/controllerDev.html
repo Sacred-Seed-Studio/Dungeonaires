@@ -117,8 +117,8 @@
             }
 
         // Send messages to AirConsole
-            function join(){ /*airconsole.message(AirConsole.SCREEN, {a: 0});*/ goToScreen('setup'); }
-            function setup(){ airconsole.message(AirConsole.SCREEN, {a: 1, b:{n:playerName, c:getIDFromClass(selectedClass), r:getIDFromColor(selectedColor)}}); }
+            function join(){ airconsole.message(AirConsole.SCREEN, {a: 0}); goToScreen('setup'); }
+            function setup(){ airconsole.message(AirConsole.SCREEN, {a: 1, b:{n:playerName.value, c:getIDFromClass(selectedClass), r:getIDFromColor(selectedColor)}}); setReadyScreen("ready"); goToScreen("ready"); }
             function ready(){ if(!readyForDungeon){ airconsole.message(AirConsole.SCREEN, {a: 2}); readyForDungeon = true; }}
             function attack(){ airconsole.message(AirConsole.SCREEN, {a: 3}); }
             function defend(){ airconsole.message(AirConsole.SCREEN, {a: 4}); }
@@ -126,7 +126,6 @@
             function keepLoot(){ airconsole.message(AirConsole.SCREEN, {a: 6}); }
             function shareLoot(){ airconsole.message(AirConsole.SCREEN, {a: 7}); }
             function bid(){ airconsole.message(AirConsole.SCREEN, {a: 8, b:{a:bid1, b:bid2, c:bid3}}); }
-
     </script>
     <style type="text/css">
         /* Basics */
@@ -191,7 +190,7 @@
             body.setup > .setup .color.grey { background-color: grey; }
             body.setup > .setup > input { width: 75%; font-size: 16px; font-size: 3vw; padding: 5px; margin-top: 20px; text-align: center; }
             body.setup > .setup > .ready { display: flex; flex-direction: column; justify-content: center; height: 8vw; margin: 15px auto 0; }
-            body.setup > .setup > .ready > button { width: 35%; margin: 0 auto; border: 2px solid white; padding: 10px; background: none; color: #eee; font-size: 3vw; }
+            body.setup > .setup > .ready > div { width: 35%; margin: 0 auto; border: 2px solid white; padding: 10px; background: none; color: #eee; font-size: 3vw; }
 
         /* Encounter div */
             body.encounter > .encounter .flex-row-item { padding: 2.5%; height: 100%; display: flex; flex-direction: column; justify-content: center; }
@@ -207,7 +206,7 @@
             body.loot > .loot > .container.success > .success,
             body.loot > .loot > .container.miss > .miss { display: block; font-size: 50px; font-size: 10vw; margin: 10px; }
             body.loot > .loot > .container.ready > img { display: block; height: 100%; width: auto; margin: 0 auto; }
-            body.loot > .loot > .container.success > .success > button { padding: 5px; font-size: 5vw; margin: 2vw; min-width: 20vw; }
+            body.loot > .loot > .container.success > .success > div { padding: 5px; font-size: 5vw; margin: 2vw; min-width: 20vw; }
 
         /* Ready div */
             body.ready > .ready > .container { display: flex; flex-direction: column; justify-content: center; height: 100%; }
@@ -229,7 +228,7 @@
             body.shop > .shop > .flex-row-container > .flex-row-item .flex-row-item { font-size: 5vw; height: 25%; display: flex; flex-direction: column; justify-content: center; border: 1px solid white;}
     </style>
 </head>
-<body onload="init()" class="shop">
+<body onload="init()" class="join">
     <div class="join" ontouchstart="join()">
         <h1>Couch RPG</h1>
         <h2>Press to join</h2>
@@ -254,7 +253,7 @@
             <div class="flex-row-item"><div class="color violet" ontouchstart="selectColor('violet')"></div></div>
             <div class="flex-row-item"><div class="color grey" ontouchstart="selectColor('grey')"></div></div>
         </div>
-        <div class="ready"><button touchstart="setup()">Ready</button></div>
+        <div class="ready" ontouchstart="setup()"><div>Ready</div></div>
     </div>
     <div class="encounter">
         <div class="flex-row-container">
@@ -269,7 +268,7 @@
             <img src="http://iconizer.net/files/Brilliant/orig/treasure.png">    
             
             <h1 class="success">You got the loot! Share it?</h1>
-            <div class="success"><button ontouchstart="keepLoot()">No</button><button ontouchstart="shareLoot()">Yes</button></div>
+            <div class="success"><div ontouchstart="keepLoot()">No</div><div ontouchstart="shareLoot()">Yes</div></div>
 
             <h1 class="miss">You didn't get the loot, hopefully they share it!</h1>
         </div>
