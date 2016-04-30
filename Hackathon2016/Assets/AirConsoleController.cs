@@ -53,6 +53,13 @@ public class AirConsoleController : MonoBehaviour
         string action = (string)data["a"];
         switch (action)
         {
+            case "j":
+                Debug.Log("Join");
+                break;
+            case "s":
+                Debug.Log("Start");
+                StartGame();
+                break;
             case "a":
                 // ATTACK BUTTON
                 Debug.Log("attack");
