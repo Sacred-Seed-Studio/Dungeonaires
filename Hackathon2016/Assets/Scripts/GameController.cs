@@ -23,6 +23,8 @@ public class GameController : MonoBehaviour
     public Enemy currentEnemy; //there will only ever be one enemy at a time
     public GameObject titleScreen;
 
+    bool lootOut;
+
     public void Awake()
     {
         if (controller == null)
@@ -144,6 +146,13 @@ public class GameController : MonoBehaviour
     IEnumerator BattleEnd()
     {
         Debug.Log("Battle is over!");
+        lootOut = true;
+        while (lootOut)
+        {
+            //do a countdown and then randomly show the loot after 1-3 seconds (first to claim it can distribute as desired)
+            Debug.Log("Waiting for loot!");
+            yield return null;
+        }
         //show the loot and let the players fight for it!
         yield return null;
     }
@@ -236,5 +245,51 @@ public class GameController : MonoBehaviour
         playerToKill.gameObject.SetActive(false);
         AudioController.controller.PlaySound(SoundType.Death);
         RepositionPlayers();
+    }
+
+    public void Join()
+    {
+
+    }
+
+    public void Setup(string playerName, PlayerClass playerClass, int color)
+    {
+        int playerID = 1;
+        //this will call on player connect
+        OnPlayerConnect(playerID, playerClass, color, playerName);
+    }
+
+    public void Ready(int playerID)
+    {
+    }
+
+    public void Attack(int playerID)
+    {
+        players[playerID].attack = true;
+    }
+
+    public void Defend(int playerID)
+    {
+        players[playerID].defend = true;
+    }
+
+    public void Loot(int playerID)
+    {
+
+    }
+
+    public void KeepLoot(int playerID)
+    {
+
+    }
+
+    public void ShareLoot(int playerID)
+    {
+
+    }
+
+    public void Bid(int playerID, int item1Bid, int item2Bid, int item3Bid)
+    {
+        //add to the bid list, if it's not the length of # players wait
     }
 }
