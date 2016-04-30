@@ -1,56 +1,189 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class Player : MonoBehaviour, IAttackable
 {
     public int PlayerID { get; set; }
-    public Color CurrentColor
+    public int Health { get; set; }
+    public int Gold { get; set; }
+    public int AttackPower { get; set; }
+    public int DefensePower { get; set; }
+
+    int currentColor;
+    public int CurrentColor
     {
-        get { return sr.color; }
-        set { sr.color = value; }
+        get { return currentColor; }
+        set { currentColor = value; UpdateSprite(); }
     }
+
     public float attackCooldownTime = 1, defenseCooldownTime = 1;
 
     SpriteRenderer sr;
 
-    bool attack, defend;
+    public bool attack, defend;
     float nextAttack, nextDefend;
+
+    public PlayerClass pClass;
+    public PlayerClass PClass
+    {
+        get { return pClass; }
+        set { pClass = value; UpdateSprite(); }
+    }
+    Slider healthSlider;
+
+    Text nameText;
+    public string NameText
+    {
+        get { return name; }
+        set { name = value; nameText.text = name; }
+    }
+
+    public float timeAtDefend;
+    public float defenseTime = 1f;
+
+    public Image attackImage, defendImage;
+
+    public bool canAttack, canDefend;
 
     void Awake()
     {
-        sr = GetComponent<SpriteRenderer>();
+        sr = GetComponentInChildren<SpriteRenderer>();
+        nameText = GetComponentInChildren<Text>();
+        healthSlider = GetComponentInChildren<Slider>();
     }
 
     void Update()
     {
-        if (attack && Time.time > nextAttack)
+        healthSlider.value = Health;
+        canAttack = Time.time > nextAttack;
+        canDefend = Time.time > nextDefend;
+
+        //if (Time.time < nextAttack)
+        //{
+        //    attackImage.enabled = false;
+        //}
+        //else
+        //{
+        //    attackImage.enabled = true;
+        //}
+        //if (Time.time < nextDefend)
+        //{
+        //    defendImage.enabled = false;
+        //}
+        //else
+        //{
+        //    defendImage.enabled = true;
+        //}
+        if (canAttack)
+        {
+            attackImage.enabled = true;
+        }
+        else
+        {
+            attackImage.enabled = false;
+        }
+        if (canDefend)
+        {
+            defendImage.enabled = true;
+        }
+        else
+        {
+            defendImage.enabled = false;
+        }
+        if (attack && canAttack)
         {
             Attack();
         }
 
-        if (defend && Time.time > nextDefend)
+        if (defend && canDefend)
         {
             Defend();
         }
     }
 
-    public void Setup(Information info)
+    void UpdateSprite()
     {
-        attackCooldownTime = info.attackCooldownTime;
-        defenseCooldownTime = info.defenseCooldownTime;
+        //set the color and class
+        sr.sprite = SpriteDictionary.controller.GetSprite(pClass, CurrentColor);
     }
 
+    public void Setup(Information info)
+    {
+
+        Health = info.health;
+        AttackPower = info.attack;
+        DefensePower = info.defense;
+
+        attackCooldownTime = info.attackCooldownTime;
+        defenseCooldownTime = info.defenseCooldownTime;
+        healthSlider.maxValue = Health;
+        healthSlider.value = Health;
+    }
+
+    float attackDelay = 0.5f;
+    float defendDelay = 0.5f;
     public void Attack()
     {
+        StartCoroutine(ShowAttack());
         attack = false;
-
+        Debug.Log("Hitting enemy!");
+        GameController.controller.AttackEnemy(AttackPower);
         nextAttack = Time.time + attackCooldownTime;
+    }
+
+    IEnumerator ShowAttack()
+    {
+        sr.sprite = SpriteDictionary.controller.GetAttackSprite(pClass, currentColor);
+        AudioController.controller.PlaySound(PClass, true);
+        yield return new WaitForSeconds(attackDelay);
+        sr.sprite = SpriteDictionary.controller.GetSprite(pClass, currentColor);
+
+        yield return null;
     }
 
     public void Defend()
     {
+        timeAtDefend = Time.time;
+        StartCoroutine(ShowDefend());
+        //if successfully defending - take no/less damage 
+        //Gain some experience/points?
         defend = false;
-
+        Debug.Log("Defending from enemy! ");
         nextDefend = Time.time + defenseCooldownTime;
+    }
+
+    IEnumerator ShowDefend()
+    {
+        sr.sprite = SpriteDictionary.controller.GetDefendSprite(pClass, currentColor);
+        AudioController.controller.PlaySound(PClass, false);
+        yield return new WaitForSeconds(defendDelay);
+        sr.sprite = SpriteDictionary.controller.GetSprite(pClass, currentColor);
+
+        yield return null;
+    }
+    public void TakeDamage(int amount = 1)
+    {
+        if (Time.time < defenseTime + timeAtDefend)
+        {
+            //Defend against the amount;
+            amount -= DefensePower;
+            if (amount < 0) amount = 0;
+        }
+        else
+        {
+            //Debug.Log("Missed:  "+Time.time + " " + defenseTime + timeAtDefend);
+        }
+        Health -= amount;
+        //if (Health < 0)
+        //{
+        //    Health = 0;
+        //    GameController.controller.KillPlayer(this);
+        //}
+    }
+
+    public bool HasDiedEh()
+    {
+        return Health <= 0;
     }
 }

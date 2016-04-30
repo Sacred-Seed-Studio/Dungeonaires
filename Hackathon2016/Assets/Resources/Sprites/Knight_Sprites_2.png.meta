@@ -1,0 +1,481 @@
+fileFormatVersion: 2
+guid: 683946e9d676d004aa8ed8892e3d8153
+timeCreated: 1462040989
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Knight0
+    21300002: Kinght1
+    21300004: Knight2
+    21300006: Knight3
+    21300008: Knight4
+    21300010: Knight5
+    21300012: Knight6
+    21300014: Knight7
+    21300016: KnightDefend0
+    21300018: KnightDefend1
+    21300020: KnightDefend2
+    21300022: KnightDefend3
+    21300024: KnightDefend4
+    21300026: KnightDefend5
+    21300028: KnightDefend6
+    21300030: KnightDefend7
+    21300032: KnightAttack0
+    21300034: KnightAttack1
+    21300036: KnightAttack2
+    21300038: KnightAttack3
+    21300040: KnightAttack4
+    21300042: KnightAttack5
+    21300044: KnightAttack6
+    21300046: KnightAttack7
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 640
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: Knight0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 120
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 9, y: 58}
+        - {x: 0, y: 44}
+        - {x: 0, y: 0}
+        - {x: 30, y: 0}
+        - {x: 30, y: 58}
+    - name: Kinght1
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 120
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 9, y: 58}
+        - {x: 0, y: 44}
+        - {x: 0, y: 0}
+        - {x: 30, y: 0}
+        - {x: 30, y: 58}
+    - name: Knight2
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 120
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 9, y: 58}
+        - {x: 0, y: 44}
+        - {x: 0, y: 0}
+        - {x: 30, y: 0}
+        - {x: 30, y: 58}
+    - name: Knight3
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 120
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 9, y: 58}
+        - {x: 0, y: 44}
+        - {x: 0, y: 0}
+        - {x: 30, y: 0}
+        - {x: 30, y: 58}
+    - name: Knight4
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 120
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 9, y: 58}
+        - {x: 0, y: 44}
+        - {x: 0, y: 0}
+        - {x: 30, y: 0}
+        - {x: 30, y: 58}
+    - name: Knight5
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 120
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 9, y: 58}
+        - {x: 0, y: 44}
+        - {x: 0, y: 0}
+        - {x: 30, y: 0}
+        - {x: 30, y: 58}
+    - name: Knight6
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 120
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 9, y: 58}
+        - {x: 0, y: 44}
+        - {x: 0, y: 0}
+        - {x: 30, y: 0}
+        - {x: 30, y: 58}
+    - name: Knight7
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 120
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 9, y: 58}
+        - {x: 0, y: 44}
+        - {x: 0, y: 0}
+        - {x: 30, y: 0}
+        - {x: 30, y: 58}
+    - name: KnightDefend0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 60
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 17, y: 51}
+        - {x: 0, y: 48}
+        - {x: 0, y: 0}
+        - {x: 29, y: 0}
+        - {x: 29, y: 41}
+        - {x: 23, y: 51}
+    - name: KnightDefend1
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 60
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 17, y: 51}
+        - {x: 0, y: 48}
+        - {x: 0, y: 0}
+        - {x: 29, y: 0}
+        - {x: 29, y: 41}
+        - {x: 23, y: 51}
+    - name: KnightDefend2
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 60
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 17, y: 51}
+        - {x: 0, y: 48}
+        - {x: 0, y: 0}
+        - {x: 29, y: 0}
+        - {x: 29, y: 41}
+        - {x: 23, y: 51}
+    - name: KnightDefend3
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 60
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 17, y: 51}
+        - {x: 0, y: 48}
+        - {x: 0, y: 0}
+        - {x: 29, y: 0}
+        - {x: 29, y: 41}
+        - {x: 23, y: 51}
+    - name: KnightDefend4
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 60
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 17, y: 51}
+        - {x: 0, y: 48}
+        - {x: 0, y: 0}
+        - {x: 29, y: 0}
+        - {x: 29, y: 41}
+        - {x: 23, y: 51}
+    - name: KnightDefend5
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 60
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 17, y: 51}
+        - {x: 0, y: 48}
+        - {x: 0, y: 0}
+        - {x: 29, y: 0}
+        - {x: 29, y: 41}
+        - {x: 23, y: 51}
+    - name: KnightDefend6
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 60
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 17, y: 51}
+        - {x: 0, y: 48}
+        - {x: 0, y: 0}
+        - {x: 29, y: 0}
+        - {x: 29, y: 41}
+        - {x: 23, y: 51}
+    - name: KnightDefend7
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 60
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 17, y: 51}
+        - {x: 0, y: 48}
+        - {x: 0, y: 0}
+        - {x: 29, y: 0}
+        - {x: 29, y: 41}
+        - {x: 23, y: 51}
+    - name: KnightAttack0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 6, y: 56}
+        - {x: 0, y: 55}
+        - {x: 0, y: 0}
+        - {x: 33, y: 0}
+        - {x: 53, y: 48}
+        - {x: 53, y: 56}
+    - name: KnightAttack1
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 0
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 6, y: 56}
+        - {x: 0, y: 55}
+        - {x: 0, y: 0}
+        - {x: 33, y: 0}
+        - {x: 53, y: 48}
+        - {x: 53, y: 56}
+    - name: KnightAttack2
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 0
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 6, y: 56}
+        - {x: 0, y: 55}
+        - {x: 0, y: 0}
+        - {x: 33, y: 0}
+        - {x: 53, y: 48}
+        - {x: 53, y: 56}
+    - name: KnightAttack3
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 0
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 6, y: 56}
+        - {x: 0, y: 55}
+        - {x: 0, y: 0}
+        - {x: 33, y: 0}
+        - {x: 53, y: 48}
+        - {x: 53, y: 56}
+    - name: KnightAttack4
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 0
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 6, y: 56}
+        - {x: 0, y: 55}
+        - {x: 0, y: 0}
+        - {x: 33, y: 0}
+        - {x: 53, y: 48}
+        - {x: 53, y: 56}
+    - name: KnightAttack5
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 0
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 6, y: 56}
+        - {x: 0, y: 55}
+        - {x: 0, y: 0}
+        - {x: 33, y: 0}
+        - {x: 53, y: 48}
+        - {x: 53, y: 56}
+    - name: KnightAttack6
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 0
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 6, y: 56}
+        - {x: 0, y: 55}
+        - {x: 0, y: 0}
+        - {x: 33, y: 0}
+        - {x: 53, y: 48}
+        - {x: 53, y: 56}
+    - name: KnightAttack7
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 0
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 6, y: 56}
+        - {x: 0, y: 55}
+        - {x: 0, y: 0}
+        - {x: 33, y: 0}
+        - {x: 53, y: 48}
+        - {x: 53, y: 56}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

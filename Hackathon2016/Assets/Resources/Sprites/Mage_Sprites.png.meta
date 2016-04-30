@@ -1,0 +1,569 @@
+fileFormatVersion: 2
+guid: d6a51e97c11970e4db601eee098260ec
+timeCreated: 1462043927
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Mage0
+    21300002: Mage1
+    21300004: Mage2
+    21300006: Mage3
+    21300008: Mage4
+    21300010: Mage5
+    21300012: Mage6
+    21300014: Mage7
+    21300016: MageAttack0
+    21300018: MageAttack1
+    21300020: MageAttack2
+    21300022: MageAttack3
+    21300024: MageAttack4
+    21300026: MageAttack5
+    21300028: MageAttack6
+    21300030: MageAttack7
+    21300032: MageDefend0
+    21300034: MageDefend1
+    21300036: MageDefend2
+    21300038: MageDefend3
+    21300040: MageDefend4
+    21300042: MageDefend5
+    21300044: MageDefend6
+    21300046: MageDefend7
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 640
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: Mage0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 120
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 50, y: 20}
+        - {x: 50, y: 30}
+        - {x: 27, y: 59}
+        - {x: 12, y: 59}
+        - {x: 8, y: 57}
+        - {x: 0, y: 44}
+        - {x: 0, y: 0}
+        - {x: 31, y: 0}
+        - {x: 32, y: 4}
+        - {x: 32, y: 9}
+        - {x: 47, y: 15}
+    - name: Mage1
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 120
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 50, y: 20}
+        - {x: 50, y: 30}
+        - {x: 27, y: 59}
+        - {x: 12, y: 59}
+        - {x: 8, y: 57}
+        - {x: 0, y: 44}
+        - {x: 0, y: 0}
+        - {x: 31, y: 0}
+        - {x: 32, y: 4}
+        - {x: 32, y: 9}
+        - {x: 47, y: 15}
+    - name: Mage2
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 120
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 50, y: 20}
+        - {x: 50, y: 30}
+        - {x: 27, y: 59}
+        - {x: 12, y: 59}
+        - {x: 8, y: 57}
+        - {x: 0, y: 44}
+        - {x: 0, y: 0}
+        - {x: 31, y: 0}
+        - {x: 32, y: 4}
+        - {x: 32, y: 9}
+        - {x: 47, y: 15}
+    - name: Mage3
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 120
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 50, y: 20}
+        - {x: 50, y: 30}
+        - {x: 27, y: 59}
+        - {x: 12, y: 59}
+        - {x: 8, y: 57}
+        - {x: 0, y: 44}
+        - {x: 0, y: 0}
+        - {x: 31, y: 0}
+        - {x: 32, y: 4}
+        - {x: 32, y: 9}
+        - {x: 47, y: 15}
+    - name: Mage4
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 120
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 50, y: 20}
+        - {x: 50, y: 30}
+        - {x: 27, y: 59}
+        - {x: 12, y: 59}
+        - {x: 8, y: 57}
+        - {x: 0, y: 44}
+        - {x: 0, y: 0}
+        - {x: 31, y: 0}
+        - {x: 32, y: 4}
+        - {x: 32, y: 9}
+        - {x: 47, y: 15}
+    - name: Mage5
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 120
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 50, y: 20}
+        - {x: 50, y: 30}
+        - {x: 27, y: 59}
+        - {x: 12, y: 59}
+        - {x: 8, y: 57}
+        - {x: 0, y: 44}
+        - {x: 0, y: 0}
+        - {x: 31, y: 0}
+        - {x: 32, y: 4}
+        - {x: 32, y: 9}
+        - {x: 47, y: 15}
+    - name: Mage6
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 120
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 50, y: 20}
+        - {x: 50, y: 30}
+        - {x: 27, y: 59}
+        - {x: 12, y: 59}
+        - {x: 8, y: 57}
+        - {x: 0, y: 44}
+        - {x: 0, y: 0}
+        - {x: 31, y: 0}
+        - {x: 32, y: 4}
+        - {x: 32, y: 9}
+        - {x: 47, y: 15}
+    - name: Mage7
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 120
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 50, y: 20}
+        - {x: 50, y: 30}
+        - {x: 27, y: 59}
+        - {x: 12, y: 59}
+        - {x: 8, y: 57}
+        - {x: 0, y: 44}
+        - {x: 0, y: 0}
+        - {x: 31, y: 0}
+        - {x: 32, y: 4}
+        - {x: 32, y: 9}
+        - {x: 47, y: 15}
+    - name: MageAttack0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 60
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 7, y: 59}
+        - {x: 6, y: 58}
+        - {x: 6, y: 6}
+        - {x: 7, y: 1}
+        - {x: 9, y: 0}
+        - {x: 36, y: 0}
+        - {x: 58, y: 8}
+        - {x: 58, y: 39}
+        - {x: 40, y: 59}
+    - name: MageAttack1
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 60
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 7, y: 59}
+        - {x: 6, y: 58}
+        - {x: 6, y: 6}
+        - {x: 7, y: 1}
+        - {x: 9, y: 0}
+        - {x: 36, y: 0}
+        - {x: 58, y: 8}
+        - {x: 58, y: 39}
+        - {x: 40, y: 59}
+    - name: MageAttack2
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 60
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 7, y: 59}
+        - {x: 6, y: 58}
+        - {x: 6, y: 6}
+        - {x: 7, y: 1}
+        - {x: 9, y: 0}
+        - {x: 36, y: 0}
+        - {x: 58, y: 8}
+        - {x: 58, y: 39}
+        - {x: 40, y: 59}
+    - name: MageAttack3
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 60
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 7, y: 59}
+        - {x: 6, y: 58}
+        - {x: 6, y: 6}
+        - {x: 7, y: 1}
+        - {x: 9, y: 0}
+        - {x: 36, y: 0}
+        - {x: 58, y: 8}
+        - {x: 58, y: 39}
+        - {x: 40, y: 59}
+    - name: MageAttack4
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 60
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 7, y: 59}
+        - {x: 6, y: 58}
+        - {x: 6, y: 6}
+        - {x: 7, y: 1}
+        - {x: 9, y: 0}
+        - {x: 36, y: 0}
+        - {x: 58, y: 8}
+        - {x: 58, y: 39}
+        - {x: 40, y: 59}
+    - name: MageAttack5
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 60
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 7, y: 59}
+        - {x: 6, y: 58}
+        - {x: 6, y: 6}
+        - {x: 7, y: 1}
+        - {x: 9, y: 0}
+        - {x: 36, y: 0}
+        - {x: 58, y: 8}
+        - {x: 58, y: 39}
+        - {x: 40, y: 59}
+    - name: MageAttack6
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 60
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 7, y: 59}
+        - {x: 6, y: 58}
+        - {x: 6, y: 6}
+        - {x: 7, y: 1}
+        - {x: 9, y: 0}
+        - {x: 36, y: 0}
+        - {x: 58, y: 8}
+        - {x: 58, y: 39}
+        - {x: 40, y: 59}
+    - name: MageAttack7
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 60
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 7, y: 59}
+        - {x: 6, y: 58}
+        - {x: 6, y: 6}
+        - {x: 7, y: 1}
+        - {x: 9, y: 0}
+        - {x: 36, y: 0}
+        - {x: 58, y: 8}
+        - {x: 58, y: 39}
+        - {x: 40, y: 59}
+    - name: MageDefend0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 10, y: 52}
+        - {x: 8, y: 50}
+        - {x: 6, y: 11}
+        - {x: 6, y: 0}
+        - {x: 39, y: 0}
+        - {x: 38, y: 3}
+        - {x: 46, y: 25}
+        - {x: 46, y: 52}
+    - name: MageDefend1
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 0
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 10, y: 52}
+        - {x: 8, y: 50}
+        - {x: 6, y: 11}
+        - {x: 6, y: 0}
+        - {x: 39, y: 0}
+        - {x: 38, y: 3}
+        - {x: 46, y: 25}
+        - {x: 46, y: 52}
+    - name: MageDefend2
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 0
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 10, y: 52}
+        - {x: 8, y: 50}
+        - {x: 6, y: 11}
+        - {x: 6, y: 0}
+        - {x: 39, y: 0}
+        - {x: 38, y: 3}
+        - {x: 46, y: 25}
+        - {x: 46, y: 52}
+    - name: MageDefend3
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 0
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 10, y: 52}
+        - {x: 8, y: 50}
+        - {x: 6, y: 11}
+        - {x: 6, y: 0}
+        - {x: 39, y: 0}
+        - {x: 38, y: 3}
+        - {x: 46, y: 25}
+        - {x: 46, y: 52}
+    - name: MageDefend4
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 0
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 10, y: 52}
+        - {x: 8, y: 50}
+        - {x: 6, y: 11}
+        - {x: 6, y: 0}
+        - {x: 39, y: 0}
+        - {x: 38, y: 3}
+        - {x: 46, y: 25}
+        - {x: 46, y: 52}
+    - name: MageDefend5
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 0
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 10, y: 52}
+        - {x: 8, y: 50}
+        - {x: 6, y: 11}
+        - {x: 6, y: 0}
+        - {x: 39, y: 0}
+        - {x: 38, y: 3}
+        - {x: 46, y: 25}
+        - {x: 46, y: 52}
+    - name: MageDefend6
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 0
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 10, y: 52}
+        - {x: 8, y: 50}
+        - {x: 6, y: 11}
+        - {x: 6, y: 0}
+        - {x: 39, y: 0}
+        - {x: 38, y: 3}
+        - {x: 46, y: 25}
+        - {x: 46, y: 52}
+    - name: MageDefend7
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 0
+        width: 60
+        height: 60
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 10, y: 52}
+        - {x: 8, y: 50}
+        - {x: 6, y: 11}
+        - {x: 6, y: 0}
+        - {x: 39, y: 0}
+        - {x: 38, y: 3}
+        - {x: 46, y: 25}
+        - {x: 46, y: 52}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
