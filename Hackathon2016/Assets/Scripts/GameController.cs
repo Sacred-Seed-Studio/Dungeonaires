@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class GameController : MonoBehaviour
 {
-    GameController controller;
+    public static GameController controller;
 
     public int numberOfPlayers;
     public List<Player> players;
@@ -40,6 +40,7 @@ public class GameController : MonoBehaviour
     {
         StartCoroutine(WaitForPlayers());
     }
+
     void Update()
     {
         if (addPlayer && players.Count < 4)
@@ -48,10 +49,20 @@ public class GameController : MonoBehaviour
             OnPlayerConnect(playerID, (PlayerClass)Random.Range(0, 4), playerColors[playerID], GetName());
             playerID++;
         }
-        //else if (players.Count == 4 && !adventuring)
-        //{
-        //    StartCoroutine(StartAdventure());
-        //}
+
+        foreach (Player p in players)
+        {
+            int id = p.PlayerID + 1;
+            if (Input.GetButtonDown("Player" + id + "Attack"))
+            {
+                p.attack = true;
+            }
+            else if (Input.GetButtonDown("Player" + id + "Defend"))
+            {
+                p.defend = true;
+            }
+        }
+        //Input will be coming from somewhere else (the phones)
     }
 
     IEnumerator WaitForPlayers()
@@ -69,6 +80,7 @@ public class GameController : MonoBehaviour
 
     IEnumerator StartAdventure()
     {
+        adventuring = true;
         Debug.Log("Starting adventure!"); //This is the actual game part
 
         //For now there will be a single dungeon and then a single store encounter
@@ -77,6 +89,7 @@ public class GameController : MonoBehaviour
         //When all players are ready to move forward, the dungeon starts.
         yield return StartCoroutine(EnterDungeon());
         yield return StartCoroutine(StartStoreEncounter());
+        adventuring = false;
         yield return null;
     }
 
@@ -88,7 +101,9 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < numberOfEnemies; i++)
         {
             //Set up currentEnemy to the next enemy
+            currentEnemy.gameObject.SetActive(true);
             currentEnemy.Setup(enemies[i]);
+            Debug.Log("Enemy " + currentEnemy.isActiveAndEnabled + currentEnemy.name);
             yield return StartCoroutine(StartEnemyEncounter());
 
         }
@@ -101,20 +116,21 @@ public class GameController : MonoBehaviour
 
     IEnumerator StartEnemyEncounter()
     {
-        Debug.Log("A wild pikachu has appeared!");
+        Debug.Log("A wild pikachu has appeared! " + currentEnemy.Health);
         // The enemy will appear and be setup
         // Players can attack and defend (based on their cooldowns)
         // The enemy will attack according to it's schedule
         // If a player runs out of health, they die for that battle
         // If the enemy runs out of health, the players win
 
-        while (currentEnemy.Health < 0)
+        while (currentEnemy.Health > 0)
         {
-            currentEnemy.Health -= 100;
+            //currentEnemy.Health -= 100;
             // the enemy is still alive - wait for the players to get working
             Debug.Log("Kill that enemy! " + currentEnemy.Health);
+            yield return null;
         }
-
+        currentEnemy.gameObject.SetActive(false);
         StartCoroutine(BattleEnd());
         yield return null;
     }
@@ -133,6 +149,10 @@ public class GameController : MonoBehaviour
         yield return null;
     }
 
+    public void AttackEnemy(int amount)
+    {
+        currentEnemy.TakeDamage(amount);
+    }
     public void OnPlayerConnect(int newPlayerId, int playerClass, int color, string playerName)
     {
         OnPlayerConnect(newPlayerId, GetClass(playerClass), color, playerName);

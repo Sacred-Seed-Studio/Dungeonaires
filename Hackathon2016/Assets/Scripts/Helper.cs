@@ -49,7 +49,7 @@ public static class Helper
         Information[] e = new Information[n];
         for (int i = 0; i < n; i++)
         {
-            e[i] = GetInformation((EnemyClass)UnityEngine.Random.Range(0, Enum.GetNames(typeof(EnemyClass)).Length-1));
+            e[i] = GetInformation((EnemyClass)UnityEngine.Random.Range(0, Enum.GetNames(typeof(EnemyClass)).Length - 1));
         }
 
         return e;
@@ -60,10 +60,10 @@ public static class Helper
         switch (player)
         {
             default:
-            case PlayerClass.Fighter: return new Information(1, 1, 100, 10, 10);
-            case PlayerClass.Mage: return new Information(1f, 1, 125, 6, 13);
-            case PlayerClass.Rogue: return new Information(0.5f, 1, 80, 8, 12);
-            case PlayerClass.Archer: return new Information(1, 1, 90, 13, 7);
+            case PlayerClass.Fighter: return new Information(1, 1.5f, 110, 9, 11);
+            case PlayerClass.Mage: return new Information(2, 1, 90, 14, 7);
+            case PlayerClass.Rogue: return new Information(0.5f, 2, 80, 6, 14);
+            case PlayerClass.Archer: return new Information(1.5f, 0.5f, 120, 12, 9);
         }
     }
     public static Information GetInformation(EnemyClass enemy)
@@ -71,9 +71,9 @@ public static class Helper
         switch (enemy)
         {
             default:
-            case EnemyClass.Enemy1: return new Information(1, 1, 100, 10, 10);
-            case EnemyClass.Enemy2: return new Information(1f, 1, 125, 6, 13);
-            case EnemyClass.Enemy3: return new Information(5f, 1, 80, 8, 12);
+            case EnemyClass.Enemy1: return new Information(1, 1, 100, 25, 5);
+            case EnemyClass.Enemy2: return new Information(3f, 1, 125, 30, 4);
+            case EnemyClass.Enemy3: return new Information(5f, 1, 80, 15, 3);
         }
     }
 }

@@ -21,7 +21,7 @@ public class Player : MonoBehaviour, IAttackable
 
     SpriteRenderer sr;
 
-    bool attack, defend;
+    public bool attack, defend;
     float nextAttack, nextDefend;
 
     public PlayerClass pClass;
@@ -30,6 +30,7 @@ public class Player : MonoBehaviour, IAttackable
         get { return pClass; }
         set { pClass = value; UpdateSprite(); }
     }
+    Slider healthSlider;
 
     Text nameText;
     public string NameText
@@ -42,10 +43,13 @@ public class Player : MonoBehaviour, IAttackable
     {
         sr = GetComponentInChildren<SpriteRenderer>();
         nameText = GetComponentInChildren<Text>();
+        healthSlider = GetComponentInChildren<Slider>();
     }
 
     void Update()
     {
+        healthSlider.value = Health;
+
         if (attack && Time.time > nextAttack)
         {
             Attack();
@@ -65,25 +69,37 @@ public class Player : MonoBehaviour, IAttackable
 
     public void Setup(Information info)
     {
+
         Health = info.health;
         AttackPower = info.attack;
         DefensePower = info.defense;
 
         attackCooldownTime = info.attackCooldownTime;
         defenseCooldownTime = info.defenseCooldownTime;
+        healthSlider.maxValue = Health;
+        healthSlider.value = Health;
     }
 
     public void Attack()
     {
         attack = false;
-
+        Debug.Log("Hitting enemy!");
+        GameController.controller.AttackEnemy(AttackPower);
         nextAttack = Time.time + attackCooldownTime;
     }
 
     public void Defend()
     {
+        //if successfully defending - take no/less damage 
+        //Gain some experience/points?
         defend = false;
-
+        Debug.Log("Defending from enemy!");
         nextDefend = Time.time + defenseCooldownTime;
+    }
+
+    public void TakeDamage(int amount = 1)
+    {
+        Health -= amount;
+        if (Health < 0) Health = 0;
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[System.Serializable]
 public class PlayerSpriteInfo
 {
     public PlayerSpriteInfo(PlayerClass pClass, int c)
@@ -77,8 +78,6 @@ public class SpriteDictionary : MonoBehaviour
             spriteInfo.Add(psi);
             i++;
         }
-
-        Debug.Log(playerSprites.Count);
     }
 
     public Sprite GetSprite(PlayerClass pClass, int color)
