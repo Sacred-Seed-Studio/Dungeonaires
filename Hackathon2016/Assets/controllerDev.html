@@ -1,96 +1,235 @@
-
 <html>
 <head>
     <script type="text/javascript" src="https://www.airconsole.com/api/airconsole-1.3.0.js"></script>
     <script type="text/javascript">
-    // CAJ (Cheap-Ass-jQuery)
-        function setClass(el, className){ el.className = className; }
-        function addClass(el, className){ el.classList.add(className); }
-        function removeClass(el, className){ el.classList.remove(className); }
-        function $(selector){ return document.querySelectorAll(selector); }
-        function $1(selector){ return document.querySelector(selector); }
+        // CAJ (Cheap-Ass-jQuery)
+            function setClass(el, className){ el.className = className; }
+            function addClass(el, className){ el.classList.add(className); }
+            function removeClass(el, className){ el.classList.remove(className); }
+            function $(selector){ return document.querySelectorAll(selector); }
+            function $1(selector){ return document.querySelector(selector); }
 
-    // Selection Helpers
-        var selectedColor;
-        function selectColor(color){
-            if (selectedColor){ removeClass($1('.color.' + selectedColor), 'selected'); }
-            addClass($1('.color.' + color), 'selected');
-            selectedColor = color;
-        }
+        // Game Variables
+            var readyForDungeon = false;
+            var canLoot = false;
+            var selectedColor;
+            var selectedClass;
+            var bid1 = bid2 = bid3 = 0;
 
-        var selectedClass;
-        function selectClass(cls){
-            if (selectedClass){ removeClass($1('.class-img.' + selectedClass), 'selected'); }
-            addClass($1('.class-img.' + cls), 'selected');
-            selectedClass = cls;
-        }
+        // Setup Selection Helpers
+            function selectColor(color){
+                if (selectedColor){ removeClass($1('.color.' + selectedColor), 'selected'); }
+                addClass($1('.color.' + color), 'selected');
+                selectedColor = color;
+            }
+            function getIDFromColor(color){
+                var returnValue;
+                switch(color){
+                    case "red": returnValue = 0; break;
+                    case "orange": returnValue = 1; break;
+                    case "yellow": returnValue = 2; break;
+                    case "green": returnValue = 3; break;
+                    case "blue": returnValue = 4; break;
+                    case "indigo": returnValue = 5; break;
+                    case "violet": returnValue = 6; break;
+                    case "grey": returnValue = 7; break;
+                    default: returnValue = 7; break;
+                }
+                return returnValue;
+            }
 
-    // init AirConsole
-        var airconsole;
-        function init() { airconsole = new AirConsole({"orientation": "landscape"}); }
+            function selectClass(cls){
+                if (selectedClass){ removeClass($1('.class-img.' + selectedClass), 'selected'); }
+                addClass($1('.class-img.' + cls), 'selected');
+                selectedClass = cls;
+            }
+            function getIDFromClass(cls){
+                var returnValue;
+                switch(cls){
+                    case "warrior": returnValue = 0; break;
+                    case "mage": returnValue = 1; break;
+                    case "rogue": returnValue = 2; break;
+                    case "archer": returnValue = 3; break;
+                }
+                return returnValue;
+            }
 
-    // Send messages to AirConsole
-        function join(){ airconsole.message(AirConsole.SCREEN, {a: "j"}); }
-        function start(){ airconsole.message(AirConsole.SCREEN, {a: "s"}); }
-        function attack(){ airconsole.message(AirConsole.SCREEN, {a: "a"}); }
-        function defend(){ airconsole.message(AirConsole.SCREEN, {a: "d"}); }
-        function chooseClass(){ airconsole.message(AirConsole.SCREEN, {a: "cl", i: 1}); }
-        function chooseColor(){ airconsole.message(AirConsole.SCREEN, {a: "co", i: 1}); }
-        function bid(){ airconsole.message(AirConsole.SCREEN, {a: "b", i: {a:100, b:0, c:0}}); }
-        function ready(){ if(selectedColor && selectedClass){ airconsole.message(AirConsole.SCREEN, {a: "r"}); } }
+        // Setup screens
+            function goToScreen(screen){ setClass(document.body, screen); }
+            function setLootScreen(screen){ setClass(lootSubscreen, "container " + screen); }
+            function setReadyScreen(screen){ setClass(readySubscreen, "container " + screen); }
+            function setupBidScreen(screen){ bid1 = bid2 = bid3 = 0; updateBidNumbers(); }
+
+        // Update screens
+            function updateStats(def, hp, gold, atk){
+                statsDefense.innerHTML = def;
+                statsHp.innerHTML = hp + "%";
+                statsGold.innerHTML = gold;
+                statsAttack.innerHTML = atk;
+            }
+
+            function incrementBid(bidNumber, val){
+                window["bid" + bidNumber] += val;
+                if (window["bid" + bidNumber] < 0){ window["bid" + bidNumber] = 0; }
+                updateBidNumbers();
+            }
+
+            function updateBidNumbers(){
+                bid1Element.innerHTML = bid1;
+                bid2Element.innerHTML = bid2;
+                bid3Element.innerHTML = bid3;
+            }
+
+        // init AirConsole, setup recieve messages
+            var airconsole;
+            function init() { 
+                airconsole = new AirConsole({"orientation": "landscape"});
+                // Recieve messages from AirConsole
+                airconsole.onMessage = function(origin, data) {
+                    if (origin == AirConsole.SCREEN) {
+                        // update stats
+                        if (data.hasOwnProperty("a")){ updateStats(data.a.d, data.a.h, data.a.g, data.a.a); }
+                        // go to setup screen
+                        else if (data.hasOwnProperty("s")){ goToScreen("setup"); }
+                        // go to ready screen
+                        else if (data.hasOwnProperty("r")){ setReadyScreen(data.r ? "wait" : "ready"); goToScreen("ready"); }
+                        // go to encounter
+                        else if (data.hasOwnProperty("e")){ goToScreen("encounter"); }
+                        // go to loot
+                        else if (data.hasOwnProperty('l')){
+                            canLoot = false;
+                            switch(data.l){
+                                case 0: setLootScreen("wait"); break;
+                                case 1: setLootScreen("ready"); canLoot = true; break;
+                                case 2: setLootScreen("success"); break;
+                                case 3: setLootScreen("miss"); break;
+                            }
+                            goToScreen("loot");
+                        }
+                        // go to dead screen
+                        else if (data.hasOwnProperty('d')){ goToScreen('dead'); }
+                        // go to shop screen
+                        else if (data.hasOwnProperty('p')){ bid1 = bid2 = bid3 = 0; updateBidNumbers(); goToScreen('shop'); }
+                        // send bid data
+                        else if (data.hasOwnProperty('b')){ bid(); setReadyScreen("wait"); goToScreen("ready"); }
+                    }
+                };
+            }
+
+        // Send messages to AirConsole
+            function join(){ airconsole.message(AirConsole.SCREEN, {a: 0}); }
+            function setup(){ airconsole.message(AirConsole.SCREEN, {a: 1, b:{n:playerName, c:getIDFromClass(selectedClass), r:getIDFromColor(selectedColor)}}); }
+            function ready(){ if(!readyForDungeon){ airconsole.message(AirConsole.SCREEN, {a: 2}); readyForDungeon = true; }}
+            function attack(){ airconsole.message(AirConsole.SCREEN, {a: 3}); }
+            function defend(){ airconsole.message(AirConsole.SCREEN, {a: 4}); }
+            function loot(){ if(canLoot){ airconsole.message(AirConsole.SCREEN, {a: 5}); } }
+            function keepLoot(){ airconsole.message(AirConsole.SCREEN, {a: 6}); }
+            function shareLoot(){ airconsole.message(AirConsole.SCREEN, {a: 7}); }
+            function bid(){ airconsole.message(AirConsole.SCREEN, {a: 8, b:{a:bid1, b:bid2, c:bid3}}); }
 
     </script>
     <style type="text/css">
-        @font-face { font-family: 'Arial'; }
+        /* Basics */
+            html, body {
+                height: 100%;
+                margin: 0px;
+                font-family: 'PressStart2P', sans-serif;
+                color: #ddd;
+                text-align: center;
+                background-color: black;
+                box-sizing: border-box;
+            }
+            *, *:before, *:after { box-sizing: inherit; }
 
-        html, body {
-            height: 100%;
-            margin: 0px;
-            font-family: 'PressStart2P', sans-serif;
-            color: #ddd;
-            text-align: center;
-            background-color: black;
-            box-sizing: border-box;
-        }
-        *, *:before, *:after {
-            box-sizing: inherit;
-        }
+            .flex-row-container { display: -webkit-flex; display: flex; -webkit-flex-flow: row nowrap; flex-flow: row nowrap; }
+            .flex-row-item { -webkit-flex: 1 1 0; flex: 1 1 0; }
 
-        .flex-row-container { display: -webkit-flex; display: flex; -webkit-flex-flow: row nowrap; flex-flow: row nowrap; }
-        .flex-row-item { -webkit-flex: 1 0 auto; flex: 1 0 auto; }
+        /* Hide top level divs by default */
+            body:not(.ready) > .ready,
+            body:not(.dead) > .dead,
+            body:not(.join) > .join,
+            body:not(.setup) > .setup,
+            body:not(.encounter) > .encounter,
+            body:not(.loot) > .loot,
+            body:not(.shop) > .shop,
+            body > .stats-bar { display: none; }
 
-        body > .join,
-        body > .setup,
-        body > .encounter,
-        body > .loot,
-        body > .shop { display: none; }
+        /* Show stats bar on right divs */
+            body.ready > .stats-bar,
+            body.dead > .stats-bar,
+            body.encounter > .stats-bar,
+            body.loot > .stats-bar,
+            body.shop > .stats-bar { display: block; position: absolute; bottom: 0; height: 10%; width: 100%; background-color: lightgreen;     padding: 1%; font-size: large; color: black; }
+            .stats-bar .flex-row-item { display: flex; flex-direction: column; justify-content: center; height: 100%; }
 
-        body.join > .join { display: flex; flex-direction: column; justify-content: center; height: 100%; }
-        body.join > .join > h1 { font-size: 50px; font-size: 10vw; margin: 10px; }
-        body.join > .join > h2 { font-size: 25px; font-size: 5vw; margin: 10px; }
+        /* Size divs with stats bar */
+            body.ready > .ready,
+            body.dead > .dead,
+            body.encounter > .encounter,
+            body.loot > .loot,
+            body.shop > .shop { display: block; position: absolute; top: 0; height: 90%; width: 100%; }
 
-        body.setup > .setup { display: block; height: 100%; }
-        /*body.setup > .setup > h1:first-of-type { margin-top: 0; padding-top: 10px; }*/
-        body.setup > .setup > h1 { font-size: 30px; font-size: 6vw; margin: 10px 10px 0 10px; }
-        body.setup > .setup .class-img { max-width: 10vw; max-height: 10vw; }
-        body.setup > .setup .class-img.selected { border: 5px double green; }
-        body.setup > .setup .color { width: 6vw; height: 6vw; margin: 0 auto; }
-        body.setup > .setup .color.selected { border: 5px double white; }
-        body.setup > .setup .color.red { background-color: red; }
-        body.setup > .setup .color.orange { background-color: orange; }
-        body.setup > .setup .color.yellow { background-color: yellow; }
-        body.setup > .setup .color.green { background-color: green; }
-        body.setup > .setup .color.blue { background-color: blue; }
-        body.setup > .setup .color.indigo { background-color: indigo; }
-        body.setup > .setup .color.violet { background-color: violet; }
-        body.setup > .setup .color.grey { background-color: grey; }
-        body.setup > .setup > input { width: 75%; font-size: 16px; font-size: 3vw; padding: 5px; margin-top: 20px; text-align: center; }
-        body.setup > .setup > .ready { display: flex; flex-direction: column; justify-content: center; height: 8vw; margin: 15px auto 0; }
-        body.setup > .setup > .ready > button { width: 35%; margin: 0 auto; border: 2px solid white; padding: 10px; background: none; color: #eee; font-size: 3vw; }
-        
+        /* Join div */
+            body.join > .join { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+            body.join > .join > h1 { font-size: 50px; font-size: 10vw; margin: 10px; }
+            body.join > .join > h2 { font-size: 25px; font-size: 5vw; margin: 10px; }
+
+        /* Setup div */
+            body.setup > .setup { display: block; height: 100%; }
+            body.setup > .setup > h1 { font-size: 30px; font-size: 6vw; margin: 10px 10px 0 10px; }
+            body.setup > .setup .class-img { max-width: 10vw; max-height: 10vw; }
+            body.setup > .setup .class-img.selected { border: 5px double green; }
+            body.setup > .setup .color { width: 6vw; height: 6vw; margin: 0 auto; }
+            body.setup > .setup .color.selected { border: 5px double white; }
+            body.setup > .setup .color.red { background-color: red; }
+            body.setup > .setup .color.orange { background-color: orange; }
+            body.setup > .setup .color.yellow { background-color: yellow; }
+            body.setup > .setup .color.green { background-color: green; }
+            body.setup > .setup .color.blue { background-color: blue; }
+            body.setup > .setup .color.indigo { background-color: indigo; }
+            body.setup > .setup .color.violet { background-color: violet; }
+            body.setup > .setup .color.grey { background-color: grey; }
+            body.setup > .setup > input { width: 75%; font-size: 16px; font-size: 3vw; padding: 5px; margin-top: 20px; text-align: center; }
+            body.setup > .setup > .ready { display: flex; flex-direction: column; justify-content: center; height: 8vw; margin: 15px auto 0; }
+            body.setup > .setup > .ready > button { width: 35%; margin: 0 auto; border: 2px solid white; padding: 10px; background: none; color: #eee; font-size: 3vw; }
+
+        /* Encounter div */
+            body.encounter > .encounter .flex-row-item { padding: 2.5%; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+            body.encounter > .encounter .flex-row-item img { width: 100%; height: auto; }
+
+        /* Loot div */
+            body.loot > .loot > .container { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+            body.loot > .loot > .container:not(.wait) > .wait,
+            body.loot > .loot > .container:not(.ready) > img,
+            body.loot > .loot > .container:not(.success) > .success,
+            body.loot > .loot > .container:not(.miss) > .miss { display: none; }
+            body.loot > .loot > .container.wait > .wait,
+            body.loot > .loot > .container.success > .success,
+            body.loot > .loot > .container.miss > .miss { display: block; font-size: 50px; font-size: 10vw; margin: 10px; }
+            body.loot > .loot > .container.ready > img { display: block; height: 100%; width: auto; margin: 0 auto; }
+            body.loot > .loot > .container.success > .success > button { padding: 5px; font-size: 5vw; margin: 2vw; min-width: 20vw; }
+
+        /* Ready div */
+            body.ready > .ready > .container { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+            body.ready > .ready > .container:not(.ready) > .ready,
+            body.ready > .ready > .container:not(.wait) > .wait { display: none; }
+            body.ready > .ready > .container.ready > .ready,
+            body.ready > .ready > .container.wait > .wait { display: block; font-size: 50px; font-size: 10vw; margin: 10px; }
+
+        /* Dead div */
+            body.dead > .dead > .container { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+            body.dead > .dead > .container > h1 { display: block; font-size: 50px; font-size: 10vw; margin: 10px; }
+            body.dead > .dead > .container > h2 { display: block; font-size: 30px; font-size: 6vw; margin: 10px; }
+
+        /* Shop div */
+            body.shop > .shop > h1 { font-size: 30px; font-size: 6vw; margin: 10vh 5vh 5vh 5vh; }
+            body.shop > .shop > .flex-row-container > .flex-row-item { display: flex; flex-direction: column; justify-content: center; margin: 0 15px;}
+            body.shop > .shop > .flex-row-container > .flex-row-item > .container { height: 50%; }
+            body.shop > .shop > .flex-row-container > .flex-row-item .container img { height: 75%; width: auto; max-width: 100%; }
+            body.shop > .shop > .flex-row-container > .flex-row-item .flex-row-item { font-size: 5vw; height: 25%; display: flex; flex-direction: column; justify-content: center; border: 1px solid white;}
     </style>
 </head>
-<body onload="init()" class="setup">
+<body onload="init()" class="shop">
     <div class="join" ontouchstart="join()">
         <h1>Couch RPG</h1>
         <h2>Press to join</h2>
@@ -115,16 +254,80 @@
             <div class="flex-row-item"><div class="color violet" ontouchstart="selectColor('violet')"></div></div>
             <div class="flex-row-item"><div class="color grey" ontouchstart="selectColor('grey')"></div></div>
         </div>
-        <div class="ready"><button touchstart="ready()">Ready</button></div>
+        <div class="ready"><button touchstart="setup()">Ready</button></div>
     </div>
     <div class="encounter">
-        
+        <div class="flex-row-container">
+            <div class="flex-row-item" ontouchstart="defend()"><img src="http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=55969202"></div>
+            <div class="flex-row-item" ontouchstart="attack()"><img src="http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=55969202"></div>
+        </div>
     </div>
-    <div class="loot">
-        
+    <div class="loot" ontouchstart="loot()">
+        <div id="lootSubscreen" class="container success">
+            <h1 class="wait">Get Ready...</h1>
+
+            <img src="http://iconizer.net/files/Brilliant/orig/treasure.png">    
+            
+            <h1 class="success">You got the loot! Share it?</h1>
+            <div class="success"><button ontouchstart="keepLoot()">No</button><button ontouchstart="shareLoot()">Yes</button></div>
+
+            <h1 class="miss">You didn't get the loot, hopefully they share it!</h1>
+        </div>
+    </div>
+    <div class="ready" ontouchstart="ready()">
+        <div id="readySubscreen" class="container">
+            <h1 class="ready">Touch for Ready</h1>
+            <h1 class="wait">Waiting for your party</h1>
+        </div>
+    </div>
+    <div class="dead">
+        <div class="container">
+            <h1>You are dead</h1>
+            <h2>You will revive after this dungeon</h2>
+        </div>
     </div>
     <div class="shop">
-        
+        <h1>Make your bids</h1>
+        <div class="flex-row-container">
+            <div class="flex-row-item">
+                <div class="container">
+                    <img src="http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=55969202">
+                    <div class="flex-row-container">
+                        <div class="flex-row-item" ontouchstart="incrementBid(1,-1)">-</div>
+                        <div class="flex-row-item" id="bid1Element">0</div>
+                        <div class="flex-row-item" ontouchstart="incrementBid(1,1)">+</div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-row-item">
+                <div class="container">
+                    <img src="http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=55969202">
+                    <div class="flex-row-container">
+                        <div class="flex-row-item" ontouchstart="incrementBid(2,-1)">-</div>
+                        <div class="flex-row-item" id="bid2Element">0</div>
+                        <div class="flex-row-item" ontouchstart="incrementBid(2,1)">+</div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-row-item">
+                <div class="container">
+                    <img src="http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=55969202">
+                    <div class="flex-row-container">
+                        <div class="flex-row-item" ontouchstart="incrementBid(3,-1)">-</div>
+                        <div class="flex-row-item" id="bid3Element">0</div>
+                        <div class="flex-row-item" ontouchstart="incrementBid(3,1)">+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="stats-bar">
+        <div class="flex-row-container">
+            <div class="flex-row-item"><div>Def <span id="statsDefense">1000</span></div></div>
+            <div class="flex-row-item"><div>HP <span id="statsHp">10%</span></div></div>
+            <div class="flex-row-item"><div>Gold <span id="statsGold">1000</span></div></div>
+            <div class="flex-row-item"><div>Attack <span id="statsAttack">999</span></div></div>
+        </div>
     </div>
 </body>
 </html>
