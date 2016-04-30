@@ -80,12 +80,23 @@ public class Player : MonoBehaviour, IAttackable
         healthSlider.value = Health;
     }
 
+    float attackDelay = 0.5f;
     public void Attack()
     {
+        StartCoroutine(ShowAttack());
         attack = false;
         Debug.Log("Hitting enemy!");
         GameController.controller.AttackEnemy(AttackPower);
         nextAttack = Time.time + attackCooldownTime;
+    }
+
+    IEnumerator ShowAttack()
+    {
+        sr.sprite = SpriteDictionary.controller.GetAttackSprite(pClass, currentColor);
+        yield return new WaitForSeconds(attackDelay);
+        sr.sprite = SpriteDictionary.controller.GetSprite(pClass, currentColor);
+
+        yield return null;
     }
 
     public void Defend()

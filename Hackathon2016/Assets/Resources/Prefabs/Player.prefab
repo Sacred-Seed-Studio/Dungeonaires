@@ -345,6 +345,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackCooldownTime: 1
   defenseCooldownTime: 1
+  attack: 0
+  defend: 0
   pClass: 0
 --- !u!212 &21258688
 SpriteRenderer:
@@ -505,7 +507,7 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 0.39, y: 1.41}
   m_SizeDelta: {x: 10, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &22498078

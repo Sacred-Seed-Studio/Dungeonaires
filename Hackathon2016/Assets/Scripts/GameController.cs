@@ -21,6 +21,7 @@ public class GameController : MonoBehaviour
     public bool adventuring = false, waitingForPlayers = true;
 
     public Enemy currentEnemy; //there will only ever be one enemy at a time
+    public GameObject titleScreen;
 
     public void Awake()
     {
@@ -39,6 +40,7 @@ public class GameController : MonoBehaviour
     void Start()
     {
         StartCoroutine(WaitForPlayers());
+        AudioController.controller.PlayBackgroundSong(SongType.TitleScreen);
     }
 
     void Update()
@@ -67,6 +69,7 @@ public class GameController : MonoBehaviour
 
     IEnumerator WaitForPlayers()
     {
+        titleScreen.SetActive(true);
         while (players.Count != 4 && waitingForPlayers)
         {
             Debug.Log("Waiting for more players to join!");
@@ -80,6 +83,8 @@ public class GameController : MonoBehaviour
 
     IEnumerator StartAdventure()
     {
+        AudioController.controller.PlayBackgroundSong(SongType.Game);
+
         adventuring = true;
         Debug.Log("Starting adventure!"); //This is the actual game part
 
@@ -89,6 +94,8 @@ public class GameController : MonoBehaviour
         //When all players are ready to move forward, the dungeon starts.
         yield return StartCoroutine(EnterDungeon());
         yield return StartCoroutine(StartStoreEncounter());
+        AudioController.controller.PlayBackgroundSong(SongType.End);
+
         adventuring = false;
         yield return null;
     }
@@ -160,6 +167,11 @@ public class GameController : MonoBehaviour
 
     public void OnPlayerConnect(int newPlayerId, PlayerClass playerClass, int color, string playerName)
     {
+        // If the title screen is alive and well, drop it 
+        if (titleScreen.activeInHierarchy && !titleScreen.GetComponent<TitleScreenDrop>().dropping)
+        {
+            titleScreen.GetComponent<TitleScreenDrop>().drop = true;
+        }
         players.Add(Instantiate<GameObject>(playerPrefab).GetComponent<Player>());
         //players[players.Count - 1].name = "Player" + playerID;
         players[players.Count - 1].NameText = playerName;
