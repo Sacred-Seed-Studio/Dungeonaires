@@ -42,6 +42,10 @@ public class Player : MonoBehaviour, IAttackable
     public float timeAtDefend;
     public float defenseTime = 1f;
 
+    public Image attackImage, defendImage;
+
+    public bool canAttack, canDefend;
+
     void Awake()
     {
         sr = GetComponentInChildren<SpriteRenderer>();
@@ -52,13 +56,47 @@ public class Player : MonoBehaviour, IAttackable
     void Update()
     {
         healthSlider.value = Health;
+        canAttack = Time.time > nextAttack;
+        canDefend = Time.time > nextDefend;
 
-        if (attack && Time.time > nextAttack)
+        //if (Time.time < nextAttack)
+        //{
+        //    attackImage.enabled = false;
+        //}
+        //else
+        //{
+        //    attackImage.enabled = true;
+        //}
+        //if (Time.time < nextDefend)
+        //{
+        //    defendImage.enabled = false;
+        //}
+        //else
+        //{
+        //    defendImage.enabled = true;
+        //}
+        if (canAttack)
+        {
+            attackImage.enabled = true;
+        }
+        else
+        {
+            attackImage.enabled = false;
+        }
+        if (canDefend)
+        {
+            defendImage.enabled = true;
+        }
+        else
+        {
+            defendImage.enabled = false;
+        }
+        if (attack && canAttack)
         {
             Attack();
         }
 
-        if (defend && Time.time > nextDefend)
+        if (defend && canDefend)
         {
             Defend();
         }
@@ -97,6 +135,7 @@ public class Player : MonoBehaviour, IAttackable
     IEnumerator ShowAttack()
     {
         sr.sprite = SpriteDictionary.controller.GetAttackSprite(pClass, currentColor);
+        AudioController.controller.PlaySound(PClass, true);
         yield return new WaitForSeconds(attackDelay);
         sr.sprite = SpriteDictionary.controller.GetSprite(pClass, currentColor);
 
@@ -117,6 +156,7 @@ public class Player : MonoBehaviour, IAttackable
     IEnumerator ShowDefend()
     {
         sr.sprite = SpriteDictionary.controller.GetDefendSprite(pClass, currentColor);
+        AudioController.controller.PlaySound(PClass, false);
         yield return new WaitForSeconds(defendDelay);
         sr.sprite = SpriteDictionary.controller.GetSprite(pClass, currentColor);
 

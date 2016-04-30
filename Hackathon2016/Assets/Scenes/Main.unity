@@ -94,11 +94,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 490550, guid: 656333eba6380d948bb0baee8ac261d1, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 4.82
+      value: 6.25
       objectReference: {fileID: 0}
     - target: {fileID: 490550, guid: 656333eba6380d948bb0baee8ac261d1, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -0.35
+      value: -0.86
       objectReference: {fileID: 0}
     - target: {fileID: 490550, guid: 656333eba6380d948bb0baee8ac261d1, type: 2}
       propertyPath: m_LocalPosition.z
@@ -123,18 +123,6 @@ Prefab:
     - target: {fileID: 490550, guid: 656333eba6380d948bb0baee8ac261d1, type: 2}
       propertyPath: m_RootOrder
       value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 11469074, guid: 656333eba6380d948bb0baee8ac261d1, type: 2}
-      propertyPath: m_HandleRect
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 22445704, guid: 656333eba6380d948bb0baee8ac261d1, type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 137630, guid: 656333eba6380d948bb0baee8ac261d1, type: 2}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 656333eba6380d948bb0baee8ac261d1, type: 2}
@@ -178,6 +166,42 @@ Prefab:
       propertyPath: m_RootOrder
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 11430654, guid: 2a554f42194563745a0aec5aa9c38214, type: 2}
+      propertyPath: death
+      value: 
+      objectReference: {fileID: 8300000, guid: f19078753fa724c4d912bc902903036d, type: 3}
+    - target: {fileID: 11430654, guid: 2a554f42194563745a0aec5aa9c38214, type: 2}
+      propertyPath: archerDefend
+      value: 
+      objectReference: {fileID: 8300000, guid: a450a72a6ce3d11479fe00acea4e41d9, type: 3}
+    - target: {fileID: 11430654, guid: 2a554f42194563745a0aec5aa9c38214, type: 2}
+      propertyPath: archerAttack
+      value: 
+      objectReference: {fileID: 8300000, guid: 157b2f253b9612943a7b55e52a9c0138, type: 3}
+    - target: {fileID: 11430654, guid: 2a554f42194563745a0aec5aa9c38214, type: 2}
+      propertyPath: rogueDefend
+      value: 
+      objectReference: {fileID: 8300000, guid: 0ac90e98882c6bf43a88362ee716be8d, type: 3}
+    - target: {fileID: 11430654, guid: 2a554f42194563745a0aec5aa9c38214, type: 2}
+      propertyPath: rogueAttack
+      value: 
+      objectReference: {fileID: 8300000, guid: 39d3be1b271564241a2f363154e93fec, type: 3}
+    - target: {fileID: 11430654, guid: 2a554f42194563745a0aec5aa9c38214, type: 2}
+      propertyPath: mageDefend
+      value: 
+      objectReference: {fileID: 8300000, guid: a450a72a6ce3d11479fe00acea4e41d9, type: 3}
+    - target: {fileID: 11430654, guid: 2a554f42194563745a0aec5aa9c38214, type: 2}
+      propertyPath: mageAttack
+      value: 
+      objectReference: {fileID: 8300000, guid: 157b2f253b9612943a7b55e52a9c0138, type: 3}
+    - target: {fileID: 11430654, guid: 2a554f42194563745a0aec5aa9c38214, type: 2}
+      propertyPath: fighterAttack
+      value: 
+      objectReference: {fileID: 8300000, guid: 39d3be1b271564241a2f363154e93fec, type: 3}
+    - target: {fileID: 11430654, guid: 2a554f42194563745a0aec5aa9c38214, type: 2}
+      propertyPath: fighterDefend
+      value: 
+      objectReference: {fileID: 8300000, guid: 0ac90e98882c6bf43a88362ee716be8d, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2a554f42194563745a0aec5aa9c38214, type: 2}
   m_IsPrefabParent: 0
@@ -914,6 +938,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numberOfPlayers: 0
   players: []
+  deadPlayers: []
   addPlayer: 1
   playerID: 0
   playerColors: 00000000010000000200000003000000

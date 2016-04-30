@@ -234,6 +234,7 @@ public class GameController : MonoBehaviour
         players.Remove(playerToKill);
         deadPlayers.Add(playerToKill);
         playerToKill.gameObject.SetActive(false);
+        AudioController.controller.PlaySound(SoundType.Death);
         RepositionPlayers();
     }
 }
