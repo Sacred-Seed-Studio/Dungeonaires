@@ -15,7 +15,7 @@ public class AirConsoleController : MonoBehaviour
         if (instance != null) { Destroy(this); }
         else { instance = this; }
 
-        AirConsole.instance.onMessage += OnMessage;
+        AirConsole.instance.onMessage += OnMessageReceived;
         AirConsole.instance.onConnect += OnConnect;
         AirConsole.instance.onDisconnect += OnDisconnect;
     }
@@ -46,47 +46,94 @@ public class AirConsoleController : MonoBehaviour
         }
     }
 
-    void OnMessage(int device_id, JToken data)
+    void OnMessageReceived(int device_id, JToken data)
     {
-        int activePlayer = AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id);
-        Debug.Log("Active player " + activePlayer);
-        string action = (string)data["a"];
+        int activePlayerID = AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id);
+        Debug.Log("Active player " + activePlayerID);
+        int action = (int)data["a"];
+
         switch (action)
         {
-            case "j":
-                Debug.Log("Join");
+            case 0:
+                Debug.Log("Join.");
+                GameController.controller.Join();
                 break;
-            case "s":
-                Debug.Log("Start");
-                StartGame();
+            case 1:
+                Debug.Log("Setup");
+                string name = (string)data["b"]["n"];
+                PlayerClass playerClass = (PlayerClass)((int)data["b"]["c"]);
+                int playerColor = (int)data["b"]["r"];
+                GameController.controller.Setup(name, playerClass, playerColor);
                 break;
-            case "a":
-                // ATTACK BUTTON
-                Debug.Log("attack");
+            case 2:
+                Debug.Log("Ready");
+                GameController.controller.Ready(activePlayerID);
                 break;
-            case "b":
-                int itemABid = (int)data["i"]["a"];
-                int itemBBid = (int)data["i"]["b"];
-                int itemCBid = (int)data["i"]["c"];
-                // HANDLE BID
-                Debug.Log("Bid");
+            case 3:
+                Debug.Log("Attack");
+                GameController.controller.Attack(activePlayerID);
                 break;
-            case "d":
-                // DEFEND BUTTON
+            case 4:
                 Debug.Log("Defend");
+                GameController.controller.Defend(activePlayerID);
                 break;
-            case "cl":
-                int playerClass = (int)data["i"];
-                Debug.Log("Player class");
+            case 5:
+                Debug.Log("Loot");
+                GameController.controller.Loot(activePlayerID);
                 break;
-            case "co":
-                int playerColor = (int)data["i"];
-                Debug.Log("Player color");
+            case 6:
+                Debug.Log("KeepLoot");
+                GameController.controller.KeepLoot(activePlayerID);
                 break;
-            default:
-                Debug.Log("Unknown input");
+            case 7:
+                Debug.Log("ShareLoot");
+                GameController.controller.ShareLoot(activePlayerID);
+                break;
+            case 8:
+                Debug.Log("Bid");
+                int itemABid = (int)data["b"]["a"];
+                int itemBBid = (int)data["b"]["b"];
+                int itemCBid = (int)data["b"]["c"];
+                GameController.controller.Bid(activePlayerID, itemABid, itemBBid, itemCBid);
                 break;
         }
+
+        //switch (action)
+        //{
+        //    case "j":
+        //        Debug.Log("Join");
+        //        break;
+        //    case "s":
+        //        Debug.Log("Start");
+        //        StartGame();
+        //        break;
+        //    case "a":
+        //        // ATTACK BUTTON
+        //        Debug.Log("attack");
+        //        break;
+        //    case "b":
+        //        int itemABid = (int)data["b"]["a"];
+        //        int itemBBid = (int)data["b"]["b"];
+        //        int itemCBid = (int)data["b"]["c"];
+        //        // HANDLE BID
+        //        Debug.Log("Bid");
+        //        break;
+        //    case "d":
+        //        // DEFEND BUTTON
+        //        Debug.Log("Defend");
+        //        break;
+        //    case "cl":
+        //        int playerClass = (int)data["i"];
+        //        Debug.Log("Player class");
+        //        break;
+        //    case "co":
+        //        int playerColor = (int)data["i"];
+        //        Debug.Log("Player color");
+        //        break;
+        //    default:
+        //        Debug.Log("Unknown input");
+        //        break;
+        //}
     }
     #endregion
 
