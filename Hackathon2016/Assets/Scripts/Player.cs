@@ -39,6 +39,9 @@ public class Player : MonoBehaviour, IAttackable
         set { name = value; nameText.text = name; }
     }
 
+    public float timeAtDefend;
+    public float defenseTime = 1f;
+
     void Awake()
     {
         sr = GetComponentInChildren<SpriteRenderer>();
@@ -81,6 +84,7 @@ public class Player : MonoBehaviour, IAttackable
     }
 
     float attackDelay = 0.5f;
+    float defendDelay = 0.5f;
     public void Attack()
     {
         StartCoroutine(ShowAttack());
@@ -101,15 +105,35 @@ public class Player : MonoBehaviour, IAttackable
 
     public void Defend()
     {
+        timeAtDefend = Time.time;
+        StartCoroutine(ShowDefend());
         //if successfully defending - take no/less damage 
         //Gain some experience/points?
         defend = false;
-        Debug.Log("Defending from enemy!");
+        Debug.Log("Defending from enemy! ");
         nextDefend = Time.time + defenseCooldownTime;
     }
 
+    IEnumerator ShowDefend()
+    {
+        sr.sprite = SpriteDictionary.controller.GetDefendSprite(pClass, currentColor);
+        yield return new WaitForSeconds(defendDelay);
+        sr.sprite = SpriteDictionary.controller.GetSprite(pClass, currentColor);
+
+        yield return null;
+    }
     public void TakeDamage(int amount = 1)
     {
+        if (Time.time < defenseTime + timeAtDefend)
+        {
+            //Defend against the amount;
+            amount -= DefensePower;
+            if (amount < 0) amount = 0;
+        }
+        else
+        {
+            //Debug.Log("Missed:  "+Time.time + " " + defenseTime + timeAtDefend);
+        }
         Health -= amount;
         if (Health < 0) Health = 0;
     }

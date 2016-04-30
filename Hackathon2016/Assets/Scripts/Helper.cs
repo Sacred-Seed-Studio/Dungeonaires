@@ -71,9 +71,12 @@ public static class Helper
         switch (enemy)
         {
             default:
-            case EnemyClass.Enemy1: return new Information(1, 1, 100, 25, 5);
-            case EnemyClass.Enemy2: return new Information(3f, 1, 125, 30, 4);
-            case EnemyClass.Enemy3: return new Information(5f, 1, 80, 15, 3);
+            //case EnemyClass.Enemy1: return new Information(1, 1, 100, 25, 5);
+            //case EnemyClass.Enemy2: return new Information(3f, 1, 125, 30, 4);
+            //case EnemyClass.Enemy3: return new Information(5f, 1, 80, 15, 3);
+            case EnemyClass.Enemy1: return new Information(1, 1, 100, 10, 5);
+            case EnemyClass.Enemy2: return new Information(3f, 1, 125, 10, 4);
+            case EnemyClass.Enemy3: return new Information(5f, 1, 80, 10, 3);
         }
     }
 }

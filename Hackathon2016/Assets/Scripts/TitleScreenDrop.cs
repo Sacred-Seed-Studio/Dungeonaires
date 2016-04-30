@@ -23,7 +23,6 @@ public class TitleScreenDrop : MonoBehaviour
     IEnumerator Drop()
     {
         dropping = true;
-        Debug.Log(transform.position.y);
         while (transform.position.y > -430f)
         {
             transform.position = (Vector2)transform.position + Vector2.down * speed;

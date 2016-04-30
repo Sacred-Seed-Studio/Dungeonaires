@@ -17,6 +17,9 @@ public class Enemy : MonoBehaviour
     Slider healthSlider;
 
     Text nameText;
+
+    SpriteRenderer sr;
+
     public string NameText
     {
         get { return name; }
@@ -25,6 +28,7 @@ public class Enemy : MonoBehaviour
 
     void Awake()
     {
+        sr = GetComponent<SpriteRenderer>();
         healthSlider = GetComponentInChildren<Slider>();
         nameText = GetComponentInChildren<Text>();
 
@@ -58,26 +62,49 @@ public class Enemy : MonoBehaviour
         healthSlider.value = Health;
     }
 
+    float attackDelay = 0.5f;
+    float defendDelay = 0.5f;
+
     public void Attack()
     {
+        StartCoroutine(ShowAttack());
         attack = false;
+        //foreach (Player p in GameController.controller.players)
+        //{
+        //    p.TakeDamage(AttackPower);
+        //}
+        nextAttack = Time.time + attackCooldownTime;
+    }
 
-        //hit all players
+    IEnumerator ShowAttack()
+    {
+        sr.color = Color.red;
+        yield return new WaitForSeconds(attackDelay);
         foreach (Player p in GameController.controller.players)
         {
             p.TakeDamage(AttackPower);
         }
-
+        //hit all players
+        sr.color = Color.white;
         nextAttack = Time.time + attackCooldownTime;
-    }
 
+        yield return null;
+    }
     public void Defend()
     {
+        StartCoroutine(ShowDefend());
         defend = false;
 
         nextDefend = Time.time + defenseCooldownTime;
     }
+    IEnumerator ShowDefend()
+    {
+        sr.color = Color.blue;
+        yield return new WaitForSeconds(defendDelay);
+        sr.color = Color.white;
 
+        yield return null;
+    }
     public void TakeDamage(int amount = 1)
     {
         // DO something based on the enemy defense

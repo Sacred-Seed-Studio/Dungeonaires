@@ -186,7 +186,6 @@ public class GameController : MonoBehaviour
     Vector3 centerPoint, delta;
     public void RepositionPlayers()
     {
-        Debug.Log("Repositioning");
         delta = ((endPlayerPosition.position - startPlayerPosition.position) / 10f); //logic tells me it should be 8, but it doesn't look right, so I'm going with 10
         centerPoint = startPlayerPosition.position + ((endPlayerPosition.position - startPlayerPosition.position) / 2f);
         switch (players.Count)
