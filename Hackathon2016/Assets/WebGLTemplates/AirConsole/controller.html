@@ -16,6 +16,8 @@
       airconsole = new AirConsole({"orientation": "landscape"});
     }
 
+    function join(){ airconsole.message(AirConsole.SCREEN, {a: "j"}); }
+    function start(){ airconsole.message(AirConsole.SCREEN, {a: "s"}); }
     function attack(){ airconsole.message(AirConsole.SCREEN, {a: "a"}); }
     function defend(){ airconsole.message(AirConsole.SCREEN, {a: "d"}); }
     function chooseClass(){ airconsole.message(AirConsole.SCREEN, {a: "cl", i: 1}); }
@@ -40,7 +42,7 @@
         .button {
             display: inline-block;
             height: 100%;
-            width: 19%;
+            width: 10%;
             background-color: #222;
             position: relative;
         }
@@ -72,19 +74,25 @@
     </style>
 </head>
 <body onload="init()">
-    <div class="button" ontouchstart="attack()" onmousedown="attack()">
+    <div class="button" ontouchstart="join()">
+        <div class="button_label">Join</div>
+    </div>
+    <div class="button" ontouchstart="start()">
+        <div class="button_label">Start</div>
+    </div>
+    <div class="button" ontouchstart="attack()">
         <div class="button_label">Attack</div>
     </div>
-    <div class="button" ontouchstart="defend()" onmousedown="defend()">
+    <div class="button" ontouchstart="defend()">
         <div class="button_label">Defend</div>
     </div>
-    <div class="button" ontouchstart="chooseClass()" onmousedown="chooseClass()">
+    <div class="button" ontouchstart="chooseClass()">
         <div class="button_label">Class</div>
     </div>
-    <div class="button" ontouchstart="chooseColor()" onmousedown="chooseColor()">
+    <div class="button" ontouchstart="chooseColor()">
         <div class="button_label">Color</div>
     </div>
-    <div class="button" ontouchstart="bid()" onmousedown="bid()">
+    <div class="button" ontouchstart="bid()">
         <div class="button_label">Bid</div>
     </div>
 </body>
