@@ -20,6 +20,7 @@
             var throttleRate = 250;
             var canAttack = true;
             var canDefend = true;
+            var canLootThrottle = true;
 
         // Setup Selection Helpers
             function selectColor(color){
@@ -130,9 +131,9 @@
             function join(){ if(!askedToJoin){ airconsole.message(AirConsole.SCREEN, {a: 0}); askedToJoin = true; } }
             function setup(){ airconsole.message(AirConsole.SCREEN, {a: 1, b:{n:playerName.value ? playerName.value : "Jon Snow", c:getIDFromClass(selectedClass), r:getIDFromColor(selectedColor)}}); setReadyScreen("ready"); goToScreen("ready"); }
             function ready(){ if(!readyForDungeon){ airconsole.message(AirConsole.SCREEN, {a: 2}); readyForDungeon = true; setReadyScreen("wait"); }}
-            function attack(){ if(canAttack){ console.log('attacking'); canAttack=false; setTimeout(function(){canAttack=true;}, throttleRate); airconsole.message(AirConsole.SCREEN, {a: 3}); } }
-            function defend(){ if(canDefend){ console.log('defending'); canDefend=false; setTimeout(function(){canDefend=true;}, throttleRate); airconsole.message(AirConsole.SCREEN, {a: 4}); } }
-            function loot(){ if(canLoot){ airconsole.message(AirConsole.SCREEN, {a: 5}); } }
+            function attack(){ if(canAttack){ canAttack=false; setTimeout(function(){canAttack=true;}, throttleRate); airconsole.message(AirConsole.SCREEN, {a: 3}); } }
+            function defend(){ if(canDefend){ canDefend=false; setTimeout(function(){canDefend=true;}, throttleRate); airconsole.message(AirConsole.SCREEN, {a: 4}); } }
+            function loot(){ if(canLoot){ if(canLootThrottle){ canLootThrottle=false; setTimeout(function(){canLootThrottle=true;}, throttleRate); airconsole.message(AirConsole.SCREEN, {a: 5}); } } }
             function keepLoot(){ airconsole.message(AirConsole.SCREEN, {a: 6}); }
             function shareLoot(){ airconsole.message(AirConsole.SCREEN, {a: 7}); }
             function bid(){ airconsole.message(AirConsole.SCREEN, {a: 8, b:{a:bid1, b:bid2, c:bid3}}); }
