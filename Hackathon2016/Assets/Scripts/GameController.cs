@@ -24,9 +24,10 @@ public class GameController : MonoBehaviour
     public GameObject titleScreen;
 
     public Dictionary<int, int> playerDeviceIDs; //key=playerID, value=deviceID
-    public List<int> availableIDS = new List<int> { 1,2,3,4 };
-    
-    bool lootOut;
+    public List<int> availableIDS = new List<int> { 1, 2, 3, 4 };
+
+    public bool lootOut;
+    public GameObject chest;
 
     public void Awake()
     {
@@ -143,20 +144,37 @@ public class GameController : MonoBehaviour
             yield return null;
         }
         currentEnemy.gameObject.SetActive(false);
-        StartCoroutine(BattleEnd());
+        yield return StartCoroutine(BattleEnd());
         yield return null;
     }
 
+    Vector2 treasureRange = new Vector2(1f, 3f);
     IEnumerator BattleEnd()
     {
         Debug.Log("Battle is over!");
+
+        var message = new
+        {
+            l = 0,
+        };
+        AirConsoleController.instance.UpdateState(message);
+
         lootOut = true;
         while (lootOut)
         {
+            yield return new WaitForSeconds(Random.Range(treasureRange.x, treasureRange.y));
+            var message2 = new
+            {
+                l = 1,
+            };
+            AirConsoleController.instance.UpdateState(message2);
+            chest.SetActive(true);
             //do a countdown and then randomly show the loot after 1-3 seconds (first to claim it can distribute as desired)
             Debug.Log("Waiting for loot!");
             yield return null;
         }
+        chest.SetActive(false);
+
         //show the loot and let the players fight for it!
         yield return null;
     }
@@ -211,7 +229,6 @@ public class GameController : MonoBehaviour
                 players[0].transform.position = startPlayerPosition.position;
                 players[1].transform.position = centerPoint;
                 players[2].transform.position = endPlayerPosition.position; break;
-            default:
             case 4:
                 players[0].transform.position = startPlayerPosition.position;
                 players[1].transform.position = centerPoint + ((startPlayerPosition.position - centerPoint) / 2f) + delta;
@@ -245,7 +262,6 @@ public class GameController : MonoBehaviour
     public void KillPlayer(Player playerToKill)
     {
         players.Remove(playerToKill);
-        deadPlayers.Add(playerToKill);
         playerToKill.gameObject.SetActive(false);
         AudioController.controller.PlaySound(SoundType.Death);
         RepositionPlayers();
@@ -288,7 +304,7 @@ public class GameController : MonoBehaviour
         // if all connected players are ready, then start the game and update the game state on each phone
         // otherwise, wait for another player to connect
         GetPlayer(deviceID).readyToAdventure = true;
-        bool allPlayersReady = true;   
+        bool allPlayersReady = true;
         foreach (Player p in players)
         {
             if (!p.readyToAdventure) allPlayersReady = false;
@@ -315,18 +331,30 @@ public class GameController : MonoBehaviour
         GetPlayer(deviceID).defend = true;
     }
 
+    public int lootLow = 50, lootHigh = 150;
+
     public void Loot(int deviceID)
     {
-
+        lootOut = false;
+        var message = new
+        {
+            l = 2,
+        };
+        AirConsoleController.instance.UpdateState(deviceID, message);
     }
 
     public void KeepLoot(int deviceID)
     {
-
+        GetPlayer(deviceID).Gold += Random.Range(lootLow, lootHigh);
     }
 
     public void ShareLoot(int deviceID)
     {
+        int shareAmount = Random.Range(lootLow, lootHigh) / players.Count;
+        foreach (Player p in players)
+        {
+            p.Gold += shareAmount;
+        }
 
     }
 
@@ -337,7 +365,7 @@ public class GameController : MonoBehaviour
 
     Player GetPlayer(int id)
     {
-        foreach(Player p in players)
+        foreach (Player p in players)
         {
             if (p.DeviceID == id) return p;
         }
