@@ -55,6 +55,7 @@
                     case "mage": returnValue = 1; break;
                     case "rogue": returnValue = 2; break;
                     case "archer": returnValue = 3; break;
+                    default: returnValue = 0; break;
                 }
                 return returnValue;
             }
@@ -143,6 +144,7 @@
                 font-family: 'Simonetta';
                 src: url('Simonetta-Regular.ttf') format('truetype');
             }
+            html { background: url('images/Background.png') no-repeat center center fixed; background-size: cover; }
             html, body {
                 height: 100%;
                 margin: 0px;
@@ -212,7 +214,7 @@
             body.setup > .setup > .ready > div { width: 35%; margin: 0 auto; border: 2px solid white; padding: 10px; background: none; color: #eee; font-size: 3vw; }
 
         /* Encounter div */
-            body.encounter > .encounter .flex-row-item { padding: 2.5%; height: 100%; display: flex; flex-direction: column; justify-content: center; background-image: url("buttonTile.png"); background-repeat: repeat; }
+            body.encounter > .encounter .flex-row-item { padding: 2.5%; height: 100%; display: flex; flex-direction: column; justify-content: center; }
             body.encounter > .encounter .flex-row-item img { width: 100%; height: auto; }
 
         /* Loot div */
@@ -277,8 +279,8 @@
     </div>
     <div class="encounter">
         <div class="flex-row-container">
-            <div class="flex-row-item" ontouchstart="defend()"><img src="shieldButton.png"></div>
-            <div class="flex-row-item" ontouchstart="attack()"><img src="swordButton.png"></div>
+            <div class="flex-row-item" ontouchstart="defend()"><img src="Images/shieldButton.png"></div>
+            <div class="flex-row-item" ontouchstart="attack()"><img src="Images/swordButton.png"></div>
         </div>
     </div>
     <div class="loot" ontouchstart="loot()">
