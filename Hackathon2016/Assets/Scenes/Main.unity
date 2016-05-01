@@ -786,8 +786,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1579226708}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.7349997, y: 0.055000007, z: 0}
-  m_LocalScale: {x: 0.45, y: 0.5079503, z: 1}
+  m_LocalPosition: {x: 4.67, y: -0.17, z: 0}
+  m_LocalScale: {x: 5, y: 5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -1067,6 +1067,8 @@ MonoBehaviour:
   availableIDS: 01000000020000000300000004000000
   lootOut: 0
   chest: {fileID: 0}
+  lootLow: 50
+  lootHigh: 150
 --- !u!4 &1904566242
 Transform:
   m_ObjectHideFlags: 0
