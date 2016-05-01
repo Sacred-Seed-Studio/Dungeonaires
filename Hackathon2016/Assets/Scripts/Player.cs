@@ -22,7 +22,7 @@ public class Player : MonoBehaviour, IAttackable
 
     public float attackCooldownTime = 1, defenseCooldownTime = 1;
 
-    SpriteRenderer sr;
+    public SpriteRenderer sr;
 
     public bool attack, defend;
     float nextAttack, nextDefend;

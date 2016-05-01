@@ -523,6 +523,8 @@ public class GameController : MonoBehaviour
         players.Remove(playerToKill);
         playerToKill.explosion.SetActive(true);
         playerToKill.Dead = true;
+        playerToKill.transform.GetChild(0).gameObject.SetActive(false);
+        playerToKill.sr.enabled = false;
         AudioController.controller.PlaySound(SoundType.Death);
         StartCoroutine(TurnOffPlayer(playerToKill));
 
@@ -557,6 +559,8 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(0.75f);
         playerToKill.gameObject.SetActive(false);
         RepositionPlayers();
+        playerToKill.sr.enabled = true;
+        playerToKill.transform.GetChild(0).gameObject.SetActive(true);
         yield return null;
     }
 
