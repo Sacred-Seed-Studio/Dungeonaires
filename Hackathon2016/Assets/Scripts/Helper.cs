@@ -41,6 +41,20 @@ public enum EncounterType
     Enemy,
     Store
 }
+
+public class BidInformation
+{
+    public BidInformation(int id,int b1, int b2, int b3)
+    {
+        deviceID = id;
+        bid1 = b1;
+        bid2 = b2;
+        bid3 = b3;
+    }
+    public int deviceID;
+    public int bid1, bid2, bid3;
+}
+
 public static class Helper
 {
     public static Information[] GetRandomEnemies(int n)

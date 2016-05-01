@@ -31,6 +31,11 @@ public class GameController : MonoBehaviour
     public bool lootOut;
     public GameObject chest;
 
+    Dictionary<int, BidInformation> bids;
+    public bool doneBidding;
+
+    public Sprite chestClosed, chestOpen;
+
     public void Awake()
     {
         if (controller == null)
@@ -48,6 +53,7 @@ public class GameController : MonoBehaviour
         storeScreen.SetActive(false);
         endScreen.SetActive(false);
 
+        bids = new Dictionary<int, BidInformation>();
     }
 
     void Start()
@@ -109,12 +115,16 @@ public class GameController : MonoBehaviour
         AudioController.controller.PlayBackgroundSong(SongType.End);
         yield return StartCoroutine(StartStoreEncounter());
         endScreen.SetActive(true);
-        var message2 = new
+        if (!testing)
         {
-            z = 0
-        };
-        AirConsoleController.instance.UpdateState(message2);
+            var message2 = new
+            {
+                z = 0
+            };
+            AirConsoleController.instance.UpdateState(message2);
+        }
         adventuring = false;
+
         yield return null;
     }
 
@@ -134,6 +144,7 @@ public class GameController : MonoBehaviour
         }
         Debug.Log("Killed all the enemies!");
 
+        //Revive the players after the dungeon and before the store
         foreach (Player p in deadPlayers)
         {
             players.Add(p);
@@ -158,12 +169,15 @@ public class GameController : MonoBehaviour
 
     IEnumerator StartEnemyEncounter()
     {
-        Debug.Log("A wild pikachu has appeared! " + currentEnemy.Health);
-        var message = new
+        if (!testing)
         {
-            e = 0
-        };
-        AirConsoleController.instance.UpdateState(message);
+            var message = new
+            {
+                e = 0
+            };
+            AirConsoleController.instance.UpdateState(message);
+        }
+        Debug.Log("A wild pikachu has appeared! " + currentEnemy.Health);
         // The enemy will appear and be setup
         // Players can attack and defend (based on their cooldowns)
         // The enemy will attack according to it's schedule
@@ -187,20 +201,26 @@ public class GameController : MonoBehaviour
     IEnumerator BattleEnd()
     {
         Debug.Log("Battle is over!");
+        chest.GetComponent<SpriteRenderer>().sprite = chestClosed;
 
-        var message = new
+        if (!testing)
         {
-            l = 0
-        };
-        AirConsoleController.instance.UpdateState(message);
-
+            var message = new
+            {
+                l = 0
+            };
+            AirConsoleController.instance.UpdateState(message);
+        }
         lootOut = true;
         yield return new WaitForSeconds(Random.Range(treasureRange.x, treasureRange.y));
-        var message2 = new
+        if (!testing)
         {
-            l = 1
-        };
-        AirConsoleController.instance.UpdateState(message2);
+            var message2 = new
+            {
+                l = 1
+            };
+            AirConsoleController.instance.UpdateState(message2);
+        }
         while (lootOut)
         {
             chest.SetActive(true);
@@ -208,6 +228,9 @@ public class GameController : MonoBehaviour
             Debug.Log("Waiting for loot!");
             yield return null;
         }
+
+        chest.transform.GetChild(0).gameObject.SetActive(true);
+        chest.GetComponent<SpriteRenderer>().sprite = chestOpen;
         //Someone has the loot
         waitingForLootDecision = true;
         while (waitingForLootDecision)
@@ -228,11 +251,14 @@ public class GameController : MonoBehaviour
     {
         storeScreen.SetActive(true);
         Debug.Log("You've reached the store!");
-        var message = new
+        if (!testing)
         {
-            p = 0
-        };
-        AirConsoleController.instance.UpdateState(message);
+            var message = new
+            {
+                p = 0
+            };
+            AirConsoleController.instance.UpdateState(message);
+        }
         float currentTime = storeTime;
 
         while (currentTime > 0)
@@ -241,13 +267,96 @@ public class GameController : MonoBehaviour
             currentTime -= 1;
             yield return new WaitForSeconds(1f);
         }
-        //TODO
-        //check the bids ?
-        //var message2 = new
-        //{
-        //    r = 0
-        //};
-        //AirConsoleController.instance.UpdateState(message2);
+
+        //Request bids from the phones and then wait for all the responses
+        if (!testing)
+        {
+            var message = new
+            {
+                b = 0
+            };
+            AirConsoleController.instance.UpdateState(message);
+        }
+
+        while (!doneBidding)
+        {
+            yield return null;
+        }
+
+        //check th bids - highest for each item wins - nobody gets it if there is a tie
+        int highBid1 = 0, highBid2 = 0, highBid3 = 0;
+        Player highBidder1 = null, highBidder2 = null, highBidder3 = null;
+        foreach (Player p in players)
+        {
+            if (bids[p.DeviceID].bid1 > highBid1)
+            {
+                highBid1 = bids[p.DeviceID].bid1;
+                highBidder1 = p;
+            }
+            if (bids[p.DeviceID].bid2 > highBid2)
+            {
+                highBid2 = bids[p.DeviceID].bid2;
+                highBidder2 = p;
+            }
+            if (bids[p.DeviceID].bid3 > highBid3)
+            {
+                highBid3 = bids[p.DeviceID].bid3;
+                highBidder3 = p;
+            }
+        }
+        //Now we have the highest bid, so check if there are multiple of that bid and if so, nobody gets that item, if not the highest bidder gets the item, if the bid is 0, nobody gets it
+        int nBid1 = 0, nBid2 = 0, nBid3 = 0;
+
+        foreach (Player p in players)
+        {
+            if (bids[p.DeviceID].bid1 == highBid1) nBid1++;
+            if (bids[p.DeviceID].bid2 == highBid2) nBid2++;
+            if (bids[p.DeviceID].bid3 == highBid3) nBid3++;
+        }
+
+        //Check item 1:
+        if (nBid1 != 1 || highBid1 == 0)
+        {
+            Debug.Log("Nobody gets anything!");
+        }
+        else
+        {
+            //Only items with a single high bid != 0
+            highBidder1.DefensePower += 5;
+            UpdateStats(highBidder1);
+        }
+        //Check item 2:
+        if (nBid2 != 1 || highBid2 == 0)
+        {
+            Debug.Log("Nobody gets anything!");
+        }
+        else
+        {
+            //Only items with a single high bid != 0
+            highBidder2.MaxHealth += 20;
+            UpdateStats(highBidder2);
+        }
+        //Check item 3:
+        if (nBid3 != 1 || highBid3 == 0)
+        {
+            Debug.Log("Nobody gets anything!");
+        }
+        else
+        {
+            //Only items with a single high bid != 0
+            highBidder3.AttackPower += 5;
+            UpdateStats(highBidder3);
+        }
+
+        yield return new WaitForSeconds(5f);
+        if (!testing)
+        {
+            var message2 = new
+            {
+                r = 0
+            };
+            AirConsoleController.instance.UpdateState(message2);
+        }
         //send each player a screen for bidding on store items - only the highest bid for each item will be accepted
         storeScreen.SetActive(false);
         yield return null;
@@ -289,13 +398,25 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public bool testing = true;
     public void UpdateStats(Player p)
     {
-        var message = new
+        if (testing)
         {
-            a = new { d = p.DefensePower, h = (int)((p.Health * 1f / p.MaxHealth * 1f) * 100), g = p.Gold, a = p.AttackPower }
-        };
-        AirConsoleController.instance.UpdateState(p.DeviceID, message);
+            Debug.Log("Testing, won't update phone stats.");
+        }
+        else
+        {
+            if (!testing)
+            {
+
+                var message = new
+                {
+                    a = new { d = p.DefensePower, h = (int)((p.Health * 1f / p.MaxHealth * 1f) * 100), g = p.Gold, a = p.AttackPower }
+                };
+                AirConsoleController.instance.UpdateState(p.DeviceID, message);
+            }
+        }
     }
 
     Vector3 centerPoint, delta;
@@ -356,19 +477,25 @@ public class GameController : MonoBehaviour
         {
             AudioController.controller.PlayBackgroundSong(SongType.Game);
             endScreen.SetActive(true);
-            var message = new
+            if (!testing)
             {
-                x = 0
-            };
-            AirConsoleController.instance.UpdateState(message);
+                var message = new
+                {
+                    x = 0
+                };
+                AirConsoleController.instance.UpdateState(message);
+            }
         }
         else
         {
-            var message = new
+            if (!testing)
             {
-                d = 0
-            };
-            AirConsoleController.instance.UpdateState(playerToKill.DeviceID, message);
+                var message = new
+                {
+                    d = 0
+                };
+                AirConsoleController.instance.UpdateState(playerToKill.DeviceID, message);
+            }
         }
     }
     IEnumerator TurnOffPlayer(Player playerToKill)
@@ -423,12 +550,15 @@ public class GameController : MonoBehaviour
         }
         if (allPlayersReady)
         {
-            var message = new
+            if (!testing)
             {
-                e = 1
-            };
+                var message = new
+                {
+                    e = 1
+                };
 
-            AirConsoleController.instance.UpdateState(message);
+                AirConsoleController.instance.UpdateState(message);
+            }
             waitingForPlayers = false;
         }
     }
@@ -450,22 +580,27 @@ public class GameController : MonoBehaviour
     public void Loot(int deviceID)
     {
         lootOut = false;
-        var message = new
+        if (!testing)
         {
-            l = 2
-        };
-        AirConsoleController.instance.UpdateState(deviceID, message);
-
+            var message = new
+            {
+                l = 2
+            };
+            AirConsoleController.instance.UpdateState(deviceID, message);
+        }
         foreach (Player p in players)
         {
             if (p.DeviceID != deviceID && !p.Dead)
             {
                 Debug.Log(p.Dead);
-                var message3 = new
+                if (!testing)
                 {
-                    l = 3
-                };
-                AirConsoleController.instance.UpdateState(p.DeviceID, message3);
+                    var message3 = new
+                    {
+                        l = 3
+                    };
+                    AirConsoleController.instance.UpdateState(p.DeviceID, message3);
+                }
             }
         }
 
@@ -492,6 +627,16 @@ public class GameController : MonoBehaviour
     public void Bid(int deviceID, int item1Bid, int item2Bid, int item3Bid)
     {
         //add to the bid list, if it's not the length of # players wait
+        if (!bids.ContainsKey(deviceID))
+        {
+            //new bid, add it to the list and check if it's the last bid or not
+            bids[deviceID] = new BidInformation(deviceID, item1Bid, item2Bid, item3Bid);
+        }
+
+        if (bids.Count == players.Count)
+        {
+            doneBidding = true;
+        }
     }
 
     Player GetPlayer(int id)

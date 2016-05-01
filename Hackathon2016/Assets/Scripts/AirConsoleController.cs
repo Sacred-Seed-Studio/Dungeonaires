@@ -98,42 +98,6 @@ public class AirConsoleController : MonoBehaviour
                 break;
         }
 
-        //switch (action)
-        //{
-        //    case "j":
-        //        Debug.Log("Join");
-        //        break;
-        //    case "s":
-        //        Debug.Log("Start");
-        //        StartGame();
-        //        break;
-        //    case "a":
-        //        // ATTACK BUTTON
-        //        Debug.Log("attack");
-        //        break;
-        //    case "b":
-        //        int itemABid = (int)data["b"]["a"];
-        //        int itemBBid = (int)data["b"]["b"];
-        //        int itemCBid = (int)data["b"]["c"];
-        //        // HANDLE BID
-        //        Debug.Log("Bid");
-        //        break;
-        //    case "d":
-        //        // DEFEND BUTTON
-        //        Debug.Log("Defend");
-        //        break;
-        //    case "cl":
-        //        int playerClass = (int)data["i"];
-        //        Debug.Log("Player class");
-        //        break;
-        //    case "co":
-        //        int playerColor = (int)data["i"];
-        //        Debug.Log("Player color");
-        //        break;
-        //    default:
-        //        Debug.Log("Unknown input");
-        //        break;
-        //}
     }
     #endregion
 
