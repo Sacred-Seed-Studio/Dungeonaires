@@ -63,38 +63,38 @@ public class AirConsoleController : MonoBehaviour
                 string name = (string)data["b"]["n"];
                 PlayerClass playerClass = (PlayerClass)((int)data["b"]["c"]);
                 int playerColor = (int)data["b"]["r"];
-                GameController.controller.Setup(name, playerClass, playerColor);
+                GameController.controller.Setup(name, playerClass, playerColor, device_id);
                 break;
             case 2:
                 Debug.Log("Ready");
-                GameController.controller.Ready(activePlayerID);
+                GameController.controller.Ready(device_id);
                 break;
             case 3:
                 Debug.Log("Attack");
-                GameController.controller.Attack(activePlayerID);
+                GameController.controller.Attack(device_id);
                 break;
             case 4:
                 Debug.Log("Defend");
-                GameController.controller.Defend(activePlayerID);
+                GameController.controller.Defend(device_id);
                 break;
             case 5:
                 Debug.Log("Loot");
-                GameController.controller.Loot(activePlayerID);
+                GameController.controller.Loot(device_id);
                 break;
             case 6:
                 Debug.Log("KeepLoot");
-                GameController.controller.KeepLoot(activePlayerID);
+                GameController.controller.KeepLoot(device_id);
                 break;
             case 7:
                 Debug.Log("ShareLoot");
-                GameController.controller.ShareLoot(activePlayerID);
+                GameController.controller.ShareLoot(device_id);
                 break;
             case 8:
                 Debug.Log("Bid");
                 int itemABid = (int)data["b"]["a"];
                 int itemBBid = (int)data["b"]["b"];
                 int itemCBid = (int)data["b"]["c"];
-                GameController.controller.Bid(activePlayerID, itemABid, itemBBid, itemCBid);
+                GameController.controller.Bid(device_id, itemABid, itemBBid, itemCBid);
                 break;
         }
 
@@ -136,6 +136,11 @@ public class AirConsoleController : MonoBehaviour
         //}
     }
     #endregion
+
+    public void UpdateState(object data)
+    {
+        AirConsole.instance.Broadcast(data);
+    }
 
     void StartGame()
     {

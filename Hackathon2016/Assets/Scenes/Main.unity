@@ -833,6 +833,10 @@ Prefab:
       propertyPath: browserStartMode
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 149748, guid: fa4904e33f2e23c4daea6e79cdfe9f8b, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fa4904e33f2e23c4daea6e79cdfe9f8b, type: 2}
   m_IsPrefabParent: 0
@@ -985,7 +989,7 @@ MonoBehaviour:
   numberOfPlayers: 0
   players: []
   deadPlayers: []
-  addPlayer: 1
+  addPlayer: 0
   playerID: 0
   playerColors: 00000000010000000200000003000000
   randomNames:
@@ -999,6 +1003,7 @@ MonoBehaviour:
   waitingForPlayers: 1
   currentEnemy: {fileID: 1085299602}
   titleScreen: {fileID: 1876995561}
+  availableIDS: 01000000020000000300000004000000
 --- !u!4 &1904566242
 Transform:
   m_ObjectHideFlags: 0

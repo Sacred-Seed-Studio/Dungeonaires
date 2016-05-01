@@ -45,6 +45,7 @@ public class Player : MonoBehaviour, IAttackable
     public Image attackImage, defendImage;
 
     public bool canAttack, canDefend;
+    public bool readyToAdventure; //when all are ready, the player will enter the dungeon
 
     void Awake()
     {

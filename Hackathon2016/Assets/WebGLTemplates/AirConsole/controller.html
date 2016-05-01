@@ -25,15 +25,15 @@
             function getIDFromColor(color){
                 var returnValue;
                 switch(color){
-                    case "red": returnValue = 0; break;
-                    case "orange": returnValue = 1; break;
-                    case "yellow": returnValue = 2; break;
-                    case "green": returnValue = 3; break;
-                    case "blue": returnValue = 4; break;
-                    case "indigo": returnValue = 5; break;
-                    case "violet": returnValue = 6; break;
-                    case "grey": returnValue = 7; break;
-                    default: returnValue = 7; break;
+                    case "grey": returnValue = 0; break;
+                    case "red": returnValue = 1; break;
+                    case "orange": returnValue = 2; break;
+                    case "yellow": returnValue = 3; break;
+                    case "green": returnValue = 4; break;
+                    case "blue": returnValue = 5; break;
+                    case "indigo": returnValue = 6; break;
+                    case "violet": returnValue = 7; break;
+                    default: returnValue = 0; break;
                 }
                 return returnValue;
             }
@@ -119,13 +119,14 @@
         // Send messages to AirConsole
             function join(){ airconsole.message(AirConsole.SCREEN, {a: 0}); goToScreen('setup'); }
             function setup(){ airconsole.message(AirConsole.SCREEN, {a: 1, b:{n:playerName.value, c:getIDFromClass(selectedClass), r:getIDFromColor(selectedColor)}}); setReadyScreen("ready"); goToScreen("ready"); }
-            function ready(){ if(!readyForDungeon){ airconsole.message(AirConsole.SCREEN, {a: 2}); readyForDungeon = true; }}
+            function ready(){ if(!readyForDungeon){ airconsole.message(AirConsole.SCREEN, {a: 2}); readyForDungeon = true; setReadyScreen("wait"); }}
             function attack(){ airconsole.message(AirConsole.SCREEN, {a: 3}); }
             function defend(){ airconsole.message(AirConsole.SCREEN, {a: 4}); }
             function loot(){ if(canLoot){ airconsole.message(AirConsole.SCREEN, {a: 5}); } }
             function keepLoot(){ airconsole.message(AirConsole.SCREEN, {a: 6}); }
             function shareLoot(){ airconsole.message(AirConsole.SCREEN, {a: 7}); }
             function bid(){ airconsole.message(AirConsole.SCREEN, {a: 8, b:{a:bid1, b:bid2, c:bid3}}); }
+
     </script>
     <style type="text/css">
         /* Basics */
@@ -188,7 +189,7 @@
             body.setup > .setup .color.indigo { background-color: indigo; }
             body.setup > .setup .color.violet { background-color: violet; }
             body.setup > .setup .color.grey { background-color: grey; }
-            body.setup > .setup > input { width: 75%; font-size: 16px; font-size: 3vw; padding: 5px; margin-top: 20px; text-align: center; }
+            body.setup > .setup > input { width: 60%; font-size: 16px; font-size: 3vw; padding: 5px; margin-top: 20px; text-align: center; }
             body.setup > .setup > .ready { display: flex; flex-direction: column; justify-content: center; height: 8vw; margin: 15px auto 0; }
             body.setup > .setup > .ready > div { width: 35%; margin: 0 auto; border: 2px solid white; padding: 10px; background: none; color: #eee; font-size: 3vw; }
 
@@ -234,7 +235,7 @@
         <h2>Press to join</h2>
     </div>
     <div class="setup">
-        <input id="playerName" type="text" placeholder="Jon   Snow"></input>
+        <input id="playerName" type="text" maxlength="11" placeholder="Jon   Snow"></input>
         <h1>Choose Your Class</h1>
         <div class="flex-row-container">
             <div class="flex-row-item"><img class="class-img warrior" src="http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=55969202" alt="Warrior" ontouchstart="selectClass('warrior')"></div>
@@ -244,6 +245,7 @@
         </div>
         <h1>Choose Your Color</h1>
         <div class="flex-row-container">
+            <div class="flex-row-item"><div class="color grey" ontouchstart="selectColor('grey')"></div></div>
             <div class="flex-row-item"><div class="color red" ontouchstart="selectColor('red')"></div></div>
             <div class="flex-row-item"><div class="color orange" ontouchstart="selectColor('orange')"></div></div>
             <div class="flex-row-item"><div class="color yellow" ontouchstart="selectColor('yellow')"></div></div>
@@ -251,7 +253,6 @@
             <div class="flex-row-item"><div class="color blue" ontouchstart="selectColor('blue')"></div></div>
             <div class="flex-row-item"><div class="color indigo" ontouchstart="selectColor('indigo')"></div></div>
             <div class="flex-row-item"><div class="color violet" ontouchstart="selectColor('violet')"></div></div>
-            <div class="flex-row-item"><div class="color grey" ontouchstart="selectColor('grey')"></div></div>
         </div>
         <div class="ready" ontouchstart="setup()"><div>Ready</div></div>
     </div>
@@ -322,10 +323,10 @@
     </div>
     <div class="stats-bar">
         <div class="flex-row-container">
-            <div class="flex-row-item"><div>Def <span id="statsDefense">1000</span></div></div>
-            <div class="flex-row-item"><div>HP <span id="statsHp">10%</span></div></div>
-            <div class="flex-row-item"><div>Gold <span id="statsGold">1000</span></div></div>
-            <div class="flex-row-item"><div>Attack <span id="statsAttack">999</span></div></div>
+            <div class="flex-row-item"><div>Def <span id="statsDefense">0</span></div></div>
+            <div class="flex-row-item"><div>HP <span id="statsHp">100%</span></div></div>
+            <div class="flex-row-item"><div>Gold <span id="statsGold">0</span></div></div>
+            <div class="flex-row-item"><div>Attack <span id="statsAttack">0</span></div></div>
         </div>
     </div>
 </body>
