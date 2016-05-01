@@ -15,6 +15,8 @@
             var selectedColor;
             var selectedClass;
             var bid1 = bid2 = bid3 = 0;
+            var inGame = false;
+            var askedToJoin = false;
 
         // Setup Selection Helpers
             function selectColor(color){
@@ -87,38 +89,42 @@
                 // Recieve messages from AirConsole
                 airconsole.onMessage = function(origin, data) {
                     if (origin == AirConsole.SCREEN) {
-                        // update stats
-                        if (data.hasOwnProperty("a")){ updateStats(data.a.d, data.a.h, data.a.g, data.a.a); }
-                        // go to setup screen
-                        else if (data.hasOwnProperty("s")){ goToScreen("setup"); }
-                        // go to ready screen
-                        else if (data.hasOwnProperty("r")){ setReadyScreen(data.r ? "wait" : "ready"); goToScreen("ready"); }
-                        // go to encounter
-                        else if (data.hasOwnProperty("e")){ goToScreen("encounter"); }
-                        // go to loot
-                        else if (data.hasOwnProperty('l')){
-                            canLoot = false;
-                            switch(data.l){
-                                case 0: setLootScreen("wait"); break;
-                                case 1: setLootScreen("ready"); canLoot = true; break;
-                                case 2: setLootScreen("success"); break;
-                                case 3: setLootScreen("miss"); break;
+                        if (inGame){
+                            // update stats
+                            if (data.hasOwnProperty("a")){ updateStats(data.a.d, data.a.h, data.a.g, data.a.a); }
+                            // go to ready screen
+                            else if (data.hasOwnProperty("r")){ setReadyScreen(data.r ? "wait" : "ready"); goToScreen("ready"); }
+                            // go to encounter
+                            else if (data.hasOwnProperty("e")){ goToScreen("encounter"); }
+                            // go to loot
+                            else if (data.hasOwnProperty('l')){
+                                canLoot = false;
+                                switch(data.l){
+                                    case 0: setLootScreen("wait"); break;
+                                    case 1: setLootScreen("ready"); canLoot = true; break;
+                                    case 2: setLootScreen("success"); break;
+                                    case 3: setLootScreen("miss"); break;
+                                }
+                                goToScreen("loot");
                             }
-                            goToScreen("loot");
+                            // go to dead screen
+                            else if (data.hasOwnProperty('d')){ goToScreen('dead'); }
+                            // go to shop screen
+                            else if (data.hasOwnProperty('p')){ bid1 = bid2 = bid3 = 0; updateBidNumbers(); goToScreen('shop'); }
+                            // send bid data
+                            else if (data.hasOwnProperty('b')){ bid(); setReadyScreen("wait"); goToScreen("ready"); }
                         }
-                        // go to dead screen
-                        else if (data.hasOwnProperty('d')){ goToScreen('dead'); }
-                        // go to shop screen
-                        else if (data.hasOwnProperty('p')){ bid1 = bid2 = bid3 = 0; updateBidNumbers(); goToScreen('shop'); }
-                        // send bid data
-                        else if (data.hasOwnProperty('b')){ bid(); setReadyScreen("wait"); goToScreen("ready"); }
+                        // go to setup screen
+                        if (data.hasOwnProperty("s")){ goToScreen("setup"); inGame = true; }
+                        // go to full game screen
+                        else if (data.hasOwnProperty('f')){ goToScreen("full"); }
                     }
                 };
             }
 
         // Send messages to AirConsole
-            function join(){ airconsole.message(AirConsole.SCREEN, {a: 0}); goToScreen('setup'); }
-            function setup(){ airconsole.message(AirConsole.SCREEN, {a: 1, b:{n:playerName.value, c:getIDFromClass(selectedClass), r:getIDFromColor(selectedColor)}}); setReadyScreen("ready"); goToScreen("ready"); }
+            function join(){ if(!askedToJoin){ airconsole.message(AirConsole.SCREEN, {a: 0}); askedToJoin = true; } }
+            function setup(){ airconsole.message(AirConsole.SCREEN, {a: 1, b:{n:playerName.value ? playerName.value : "Jon Snow", c:getIDFromClass(selectedClass), r:getIDFromColor(selectedColor)}}); setReadyScreen("ready"); goToScreen("ready"); }
             function ready(){ if(!readyForDungeon){ airconsole.message(AirConsole.SCREEN, {a: 2}); readyForDungeon = true; setReadyScreen("wait"); }}
             function attack(){ airconsole.message(AirConsole.SCREEN, {a: 3}); }
             function defend(){ airconsole.message(AirConsole.SCREEN, {a: 4}); }
@@ -130,10 +136,14 @@
     </script>
     <style type="text/css">
         /* Basics */
+            @font-face {
+                font-family: 'Simonetta';
+                src: url('Simonetta-Regular.ttf') format('truetype');
+            }
             html, body {
                 height: 100%;
                 margin: 0px;
-                font-family: 'PressStart2P', sans-serif;
+                font-family: 'Simonetta', sans-serif;
                 color: #ddd;
                 text-align: center;
                 background-color: black;
@@ -152,6 +162,7 @@
             body:not(.encounter) > .encounter,
             body:not(.loot) > .loot,
             body:not(.shop) > .shop,
+            body:not(.full) > .full,
             body > .stats-bar { display: none; }
 
         /* Show stats bar on right divs */
@@ -173,6 +184,10 @@
             body.join > .join { display: flex; flex-direction: column; justify-content: center; height: 100%; }
             body.join > .join > h1 { font-size: 50px; font-size: 10vw; margin: 10px; }
             body.join > .join > h2 { font-size: 25px; font-size: 5vw; margin: 10px; }
+
+        /* Full div */
+            body.full > .full { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+            body.full > .full > h1 { font-size: 50px; font-size: 10vw; margin: 10px; }
 
         /* Setup div */
             body.setup > .setup { display: block; height: 100%; }
@@ -328,6 +343,9 @@
             <div class="flex-row-item"><div>Gold <span id="statsGold">0</span></div></div>
             <div class="flex-row-item"><div>Attack <span id="statsAttack">0</span></div></div>
         </div>
+    </div>
+    <div class="full">
+        <h1>Too many players</h1>
     </div>
 </body>
 </html>

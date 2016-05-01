@@ -15,6 +15,8 @@
             var selectedColor;
             var selectedClass;
             var bid1 = bid2 = bid3 = 0;
+            var inGame = false;
+            var askedToJoin = false;
 
         // Setup Selection Helpers
             function selectColor(color){
@@ -25,15 +27,15 @@
             function getIDFromColor(color){
                 var returnValue;
                 switch(color){
-                    case "red": returnValue = 0; break;
-                    case "orange": returnValue = 1; break;
-                    case "yellow": returnValue = 2; break;
-                    case "green": returnValue = 3; break;
-                    case "blue": returnValue = 4; break;
-                    case "indigo": returnValue = 5; break;
-                    case "violet": returnValue = 6; break;
-                    case "grey": returnValue = 7; break;
-                    default: returnValue = 7; break;
+                    case "grey": returnValue = 0; break;
+                    case "red": returnValue = 1; break;
+                    case "orange": returnValue = 2; break;
+                    case "yellow": returnValue = 3; break;
+                    case "green": returnValue = 4; break;
+                    case "blue": returnValue = 5; break;
+                    case "indigo": returnValue = 6; break;
+                    case "violet": returnValue = 7; break;
+                    default: returnValue = 0; break;
                 }
                 return returnValue;
             }
@@ -87,52 +89,61 @@
                 // Recieve messages from AirConsole
                 airconsole.onMessage = function(origin, data) {
                     if (origin == AirConsole.SCREEN) {
-                        // update stats
-                        if (data.hasOwnProperty("a")){ updateStats(data.a.d, data.a.h, data.a.g, data.a.a); }
-                        // go to setup screen
-                        else if (data.hasOwnProperty("s")){ goToScreen("setup"); }
-                        // go to ready screen
-                        else if (data.hasOwnProperty("r")){ setReadyScreen(data.r ? "wait" : "ready"); goToScreen("ready"); }
-                        // go to encounter
-                        else if (data.hasOwnProperty("e")){ goToScreen("encounter"); }
-                        // go to loot
-                        else if (data.hasOwnProperty('l')){
-                            canLoot = false;
-                            switch(data.l){
-                                case 0: setLootScreen("wait"); break;
-                                case 1: setLootScreen("ready"); canLoot = true; break;
-                                case 2: setLootScreen("success"); break;
-                                case 3: setLootScreen("miss"); break;
+                        if (inGame){
+                            // update stats
+                            if (data.hasOwnProperty("a")){ updateStats(data.a.d, data.a.h, data.a.g, data.a.a); }
+                            // go to ready screen
+                            else if (data.hasOwnProperty("r")){ setReadyScreen(data.r ? "wait" : "ready"); goToScreen("ready"); }
+                            // go to encounter
+                            else if (data.hasOwnProperty("e")){ goToScreen("encounter"); }
+                            // go to loot
+                            else if (data.hasOwnProperty('l')){
+                                canLoot = false;
+                                switch(data.l){
+                                    case 0: setLootScreen("wait"); break;
+                                    case 1: setLootScreen("ready"); canLoot = true; break;
+                                    case 2: setLootScreen("success"); break;
+                                    case 3: setLootScreen("miss"); break;
+                                }
+                                goToScreen("loot");
                             }
-                            goToScreen("loot");
+                            // go to dead screen
+                            else if (data.hasOwnProperty('d')){ goToScreen('dead'); }
+                            // go to shop screen
+                            else if (data.hasOwnProperty('p')){ bid1 = bid2 = bid3 = 0; updateBidNumbers(); goToScreen('shop'); }
+                            // send bid data
+                            else if (data.hasOwnProperty('b')){ bid(); setReadyScreen("wait"); goToScreen("ready"); }
                         }
-                        // go to dead screen
-                        else if (data.hasOwnProperty('d')){ goToScreen('dead'); }
-                        // go to shop screen
-                        else if (data.hasOwnProperty('p')){ bid1 = bid2 = bid3 = 0; updateBidNumbers(); goToScreen('shop'); }
-                        // send bid data
-                        else if (data.hasOwnProperty('b')){ bid(); setReadyScreen("wait"); goToScreen("ready"); }
+                        // go to setup screen
+                        if (data.hasOwnProperty("s")){ goToScreen("setup"); inGame = true; }
+                        // go to full game screen
+                        else if (data.hasOwnProperty('f')){ goToScreen("full"); }
                     }
                 };
             }
 
         // Send messages to AirConsole
-            function join(){ airconsole.message(AirConsole.SCREEN, {a: 0}); goToScreen('setup'); }
-            function setup(){ airconsole.message(AirConsole.SCREEN, {a: 1, b:{n:playerName.value, c:getIDFromClass(selectedClass), r:getIDFromColor(selectedColor)}}); setReadyScreen("ready"); goToScreen("ready"); }
-            function ready(){ if(!readyForDungeon){ airconsole.message(AirConsole.SCREEN, {a: 2}); readyForDungeon = true; }}
+            function join(){ if(!askedToJoin){ airconsole.message(AirConsole.SCREEN, {a: 0}); askedToJoin = true; } }
+            function setup(){ airconsole.message(AirConsole.SCREEN, {a: 1, b:{n:playerName.value ? playerName.value : "Jon Snow", c:getIDFromClass(selectedClass), r:getIDFromColor(selectedColor)}}); setReadyScreen("ready"); goToScreen("ready"); }
+            function ready(){ if(!readyForDungeon){ airconsole.message(AirConsole.SCREEN, {a: 2}); readyForDungeon = true; setReadyScreen("wait"); }}
             function attack(){ airconsole.message(AirConsole.SCREEN, {a: 3}); }
             function defend(){ airconsole.message(AirConsole.SCREEN, {a: 4}); }
             function loot(){ if(canLoot){ airconsole.message(AirConsole.SCREEN, {a: 5}); } }
             function keepLoot(){ airconsole.message(AirConsole.SCREEN, {a: 6}); }
             function shareLoot(){ airconsole.message(AirConsole.SCREEN, {a: 7}); }
             function bid(){ airconsole.message(AirConsole.SCREEN, {a: 8, b:{a:bid1, b:bid2, c:bid3}}); }
+
     </script>
     <style type="text/css">
         /* Basics */
+            @font-face {
+                font-family: 'Simonetta';
+                src: url('Simonetta-Regular.ttf') format('truetype');
+            }
             html, body {
                 height: 100%;
                 margin: 0px;
-                font-family: 'PressStart2P', sans-serif;
+                font-family: 'Simonetta', sans-serif;
                 color: #ddd;
                 text-align: center;
                 background-color: black;
@@ -151,6 +162,7 @@
             body:not(.encounter) > .encounter,
             body:not(.loot) > .loot,
             body:not(.shop) > .shop,
+            body:not(.full) > .full,
             body > .stats-bar { display: none; }
 
         /* Show stats bar on right divs */
@@ -173,6 +185,10 @@
             body.join > .join > h1 { font-size: 50px; font-size: 10vw; margin: 10px; }
             body.join > .join > h2 { font-size: 25px; font-size: 5vw; margin: 10px; }
 
+        /* Full div */
+            body.full > .full { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+            body.full > .full > h1 { font-size: 50px; font-size: 10vw; margin: 10px; }
+
         /* Setup div */
             body.setup > .setup { display: block; height: 100%; }
             body.setup > .setup > h1 { font-size: 30px; font-size: 6vw; margin: 10px 10px 0 10px; }
@@ -188,7 +204,7 @@
             body.setup > .setup .color.indigo { background-color: indigo; }
             body.setup > .setup .color.violet { background-color: violet; }
             body.setup > .setup .color.grey { background-color: grey; }
-            body.setup > .setup > input { width: 75%; font-size: 16px; font-size: 3vw; padding: 5px; margin-top: 20px; text-align: center; }
+            body.setup > .setup > input { width: 60%; font-size: 16px; font-size: 3vw; padding: 5px; margin-top: 20px; text-align: center; }
             body.setup > .setup > .ready { display: flex; flex-direction: column; justify-content: center; height: 8vw; margin: 15px auto 0; }
             body.setup > .setup > .ready > div { width: 35%; margin: 0 auto; border: 2px solid white; padding: 10px; background: none; color: #eee; font-size: 3vw; }
 
@@ -234,7 +250,7 @@
         <h2>Press to join</h2>
     </div>
     <div class="setup">
-        <input id="playerName" type="text" placeholder="Jon   Snow"></input>
+        <input id="playerName" type="text" maxlength="11" placeholder="Jon   Snow"></input>
         <h1>Choose Your Class</h1>
         <div class="flex-row-container">
             <div class="flex-row-item"><img class="class-img warrior" src="http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=55969202" alt="Warrior" ontouchstart="selectClass('warrior')"></div>
@@ -244,6 +260,7 @@
         </div>
         <h1>Choose Your Color</h1>
         <div class="flex-row-container">
+            <div class="flex-row-item"><div class="color grey" ontouchstart="selectColor('grey')"></div></div>
             <div class="flex-row-item"><div class="color red" ontouchstart="selectColor('red')"></div></div>
             <div class="flex-row-item"><div class="color orange" ontouchstart="selectColor('orange')"></div></div>
             <div class="flex-row-item"><div class="color yellow" ontouchstart="selectColor('yellow')"></div></div>
@@ -251,7 +268,6 @@
             <div class="flex-row-item"><div class="color blue" ontouchstart="selectColor('blue')"></div></div>
             <div class="flex-row-item"><div class="color indigo" ontouchstart="selectColor('indigo')"></div></div>
             <div class="flex-row-item"><div class="color violet" ontouchstart="selectColor('violet')"></div></div>
-            <div class="flex-row-item"><div class="color grey" ontouchstart="selectColor('grey')"></div></div>
         </div>
         <div class="ready" ontouchstart="setup()"><div>Ready</div></div>
     </div>
@@ -322,11 +338,14 @@
     </div>
     <div class="stats-bar">
         <div class="flex-row-container">
-            <div class="flex-row-item"><div>Def <span id="statsDefense">1000</span></div></div>
-            <div class="flex-row-item"><div>HP <span id="statsHp">10%</span></div></div>
-            <div class="flex-row-item"><div>Gold <span id="statsGold">1000</span></div></div>
-            <div class="flex-row-item"><div>Attack <span id="statsAttack">999</span></div></div>
+            <div class="flex-row-item"><div>Def <span id="statsDefense">0</span></div></div>
+            <div class="flex-row-item"><div>HP <span id="statsHp">100%</span></div></div>
+            <div class="flex-row-item"><div>Gold <span id="statsGold">0</span></div></div>
+            <div class="flex-row-item"><div>Attack <span id="statsAttack">0</span></div></div>
         </div>
+    </div>
+    <div class="full">
+        <h1>Too many players</h1>
     </div>
 </body>
 </html>
