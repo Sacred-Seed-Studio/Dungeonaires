@@ -18,7 +18,10 @@ public enum SoundType
     RogueDefend,
     ArcherAttack,
     ArcherDefend,
-    Death
+    Death,
+    Enemy1Attack,
+    Enemy2Attack,
+    Enemy3Attack
 }
 public class AudioController : MonoBehaviour
 {
@@ -26,6 +29,7 @@ public class AudioController : MonoBehaviour
 
     public AudioClip titleScreenSong, gameSong, endSong;
     public AudioClip fighterAttack, fighterDefend, mageAttack, mageDefend, rogueAttack, rogueDefend, archerAttack, archerDefend, death;
+    public AudioClip enemy1Attack, enemy2Attack, enemy3Attack;
 
     AudioSource audioSource;
 
@@ -68,11 +72,23 @@ public class AudioController : MonoBehaviour
             case SoundType.ArcherAttack: clip = archerAttack; break;
             case SoundType.ArcherDefend: clip = archerDefend; break;
             case SoundType.Death: clip = death; break;
+            case SoundType.Enemy1Attack: clip = enemy1Attack; break;
+            case SoundType.Enemy2Attack: clip = enemy2Attack; break;
+            case SoundType.Enemy3Attack: clip = enemy3Attack; break;
         }
 
         audioSource.PlayOneShot(clip);
     }
 
+    public void PlaySound(EnemyClass eClass)
+    {
+        switch (eClass)
+        {
+            case EnemyClass.Enemy1: PlaySound(SoundType.Enemy1Attack); break;
+            case EnemyClass.Enemy2: PlaySound(SoundType.Enemy2Attack); break;
+            case EnemyClass.Enemy3: PlaySound(SoundType.Enemy3Attack); break;
+        }
+    }
     public void PlaySound(PlayerClass pClass, bool attack = true)
     {
         //attack = false => defend

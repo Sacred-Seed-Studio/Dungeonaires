@@ -2155,6 +2155,18 @@ Prefab:
       propertyPath: gameSong
       value: 
       objectReference: {fileID: 8300000, guid: cbec04f736960f74aabca19c26ae3ddc, type: 3}
+    - target: {fileID: 11430654, guid: 2a554f42194563745a0aec5aa9c38214, type: 2}
+      propertyPath: enemy1Attack
+      value: 
+      objectReference: {fileID: 8300000, guid: 502be862333ae094fa8040b10e2b0be6, type: 3}
+    - target: {fileID: 11430654, guid: 2a554f42194563745a0aec5aa9c38214, type: 2}
+      propertyPath: enemy2Attack
+      value: 
+      objectReference: {fileID: 8300000, guid: 976da3dfb4e768c4ca96a3a052a9c12b, type: 3}
+    - target: {fileID: 11430654, guid: 2a554f42194563745a0aec5aa9c38214, type: 2}
+      propertyPath: enemy3Attack
+      value: 
+      objectReference: {fileID: 8300000, guid: 014893c4a176d6e4d961c499f6fd2b25, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2a554f42194563745a0aec5aa9c38214, type: 2}
   m_IsPrefabParent: 0
@@ -5098,7 +5110,7 @@ MonoBehaviour:
   chestClosed: {fileID: 21300000, guid: 7ca0e80802e22a640bdeb3f4e4dc24f0, type: 3}
   chestOpen: {fileID: 21300000, guid: 3b62dd5612a64e74bb5b93fcfc592f86, type: 3}
   waitingForLootDecision: 0
-  testing: 0
+  testing: 1
   lootLow: 50
   lootHigh: 150
 --- !u!4 &1904566242

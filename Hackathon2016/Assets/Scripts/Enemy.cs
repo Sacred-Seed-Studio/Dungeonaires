@@ -66,6 +66,8 @@ public class Enemy : MonoBehaviour
         healthSlider.value = Health;
         enemyClass = info.eClass;
         sr.sprite = enemySprites[(int)enemyClass];
+
+        nextAttack = Time.time + attackCooldownTime;
     }
 
     float attackDelay = 0.5f;
@@ -86,6 +88,7 @@ public class Enemy : MonoBehaviour
     {
         sr.color = Color.red;
         yield return new WaitForSeconds(attackDelay);
+        AudioController.controller.PlaySound(enemyClass);
         foreach (Player p in GameController.controller.players)
         {
             p.TakeDamage(AttackPower);
