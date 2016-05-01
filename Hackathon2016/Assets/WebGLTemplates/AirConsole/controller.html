@@ -106,7 +106,7 @@
                                 switch(data.l){
                                     case 0: setLootScreen("wait"); break;
                                     case 1: setLootScreen("ready"); canLoot = true; break;
-                                    case 2: setLootScreen("success"); airconsole.message(undefined, {l:3}); break;
+                                    case 2: setLootScreen("success"); break;
                                     case 3: setLootScreen("miss"); break;
                                 }
                                 goToScreen("loot");
@@ -131,7 +131,7 @@
             function setup(){ airconsole.message(AirConsole.SCREEN, {a: 1, b:{n:playerName.value ? playerName.value : "Jon Snow", c:getIDFromClass(selectedClass), r:getIDFromColor(selectedColor)}}); setReadyScreen("ready"); goToScreen("ready"); }
             function ready(){ if(!readyForDungeon){ airconsole.message(AirConsole.SCREEN, {a: 2}); readyForDungeon = true; setReadyScreen("wait"); }}
             function attack(){ if(canAttack){ console.log('attacking'); canAttack=false; setTimeout(function(){canAttack=true;}, throttleRate); airconsole.message(AirConsole.SCREEN, {a: 3}); } }
-            function defend(){ if(canDefend){ console.log('defending'); canAttack=false; setTimeout(function(){canDefend=true;}, throttleRate); airconsole.message(AirConsole.SCREEN, {a: 4}); } }
+            function defend(){ if(canDefend){ console.log('defending'); canDefend=false; setTimeout(function(){canDefend=true;}, throttleRate); airconsole.message(AirConsole.SCREEN, {a: 4}); } }
             function loot(){ if(canLoot){ airconsole.message(AirConsole.SCREEN, {a: 5}); } }
             function keepLoot(){ airconsole.message(AirConsole.SCREEN, {a: 6}); }
             function shareLoot(){ airconsole.message(AirConsole.SCREEN, {a: 7}); }
@@ -174,8 +174,9 @@
             body.dead > .stats-bar,
             body.encounter > .stats-bar,
             body.loot > .stats-bar,
-            body.shop > .stats-bar { display: block; position: absolute; bottom: 0; height: 10%; width: 100%; background-color: lightgreen;     padding: 1%; font-size: large; color: black; }
+            body.shop > .stats-bar { display: block; position: absolute; bottom: 0; height: 10%; width: 100%; padding: 1%; font-size: large; color: black; background-image: url("tile.png"); background-repeat: repeat-x; }
             .stats-bar .flex-row-item { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+            .stats-bar img { height: 100%; width:auto; vertical-align: bottom; }
 
         /* Size divs with stats bar */
             body.ready > .ready,
@@ -258,8 +259,8 @@
         <input id="playerName" type="text" maxlength="11" placeholder="Jon   Snow"></input>
         <h1>Choose Your Class</h1>
         <div class="flex-row-container">
-            <div class="flex-row-item"><img class="class-img warrior" src="http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=55969202" alt="Warrior" ontouchstart="selectClass('warrior')"></div>
-            <div class="flex-row-item"><img class="class-img mage" src="http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=55969202" alt="Mage" ontouchstart="selectClass('mage')"></div>
+            <div class="flex-row-item"><img class="class-img warrior" src="Images/portraitKnight.png" alt="Warrior" ontouchstart="selectClass('warrior')"></div>
+            <div class="flex-row-item"><img class="class-img mage" src="Images/portraitMage.png" alt="Mage" ontouchstart="selectClass('mage')"></div>
             <div class="flex-row-item"><img class="class-img rogue" src="http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=55969202" alt="Rogue" ontouchstart="selectClass('rogue')"></div>
             <div class="flex-row-item"><img class="class-img archer" src="http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=55969202" alt="Archer" ontouchstart="selectClass('archer')"></div>
         </div>
@@ -278,8 +279,8 @@
     </div>
     <div class="encounter">
         <div class="flex-row-container">
-            <div class="flex-row-item" ontouchstart="defend()"><img src="Images/shieldButton.png"></div>
-            <div class="flex-row-item" ontouchstart="attack()"><img src="Images/swordButton.png"></div>
+            <div class="flex-row-item" ontouchstart="defend()"><img src="Images/buttonShield.png"></div>
+            <div class="flex-row-item" ontouchstart="attack()"><img src="Images/buttonSword.png"></div>
         </div>
     </div>
     <div class="loot" ontouchstart="loot()">
@@ -311,7 +312,7 @@
         <div class="flex-row-container">
             <div class="flex-row-item">
                 <div class="container">
-                    <img src="shieldButton.png">
+                    <img src="Images/shieldSm.png">
                     <div class="flex-row-container">
                         <div class="flex-row-item" ontouchstart="incrementBid(1,-1)">-</div>
                         <div class="flex-row-item" id="bid1Element">0</div>
@@ -321,7 +322,7 @@
             </div>
             <div class="flex-row-item">
                 <div class="container">
-                    <img src="shieldButton.png">
+                    <img src="Images/heartSm.png">
                     <div class="flex-row-container">
                         <div class="flex-row-item" ontouchstart="incrementBid(2,-1)">-</div>
                         <div class="flex-row-item" id="bid2Element">0</div>
@@ -331,7 +332,7 @@
             </div>
             <div class="flex-row-item">
                 <div class="container">
-                    <img src="swordButton.png">
+                    <img src="Images/swordSm.png">
                     <div class="flex-row-container">
                         <div class="flex-row-item" ontouchstart="incrementBid(3,-1)">-</div>
                         <div class="flex-row-item" id="bid3Element">0</div>
@@ -343,10 +344,10 @@
     </div>
     <div class="stats-bar">
         <div class="flex-row-container">
-            <div class="flex-row-item"><div>Def <span id="statsDefense">0</span></div></div>
-            <div class="flex-row-item"><div>HP <span id="statsHp">100%</span></div></div>
-            <div class="flex-row-item"><div>Gold <span id="statsGold">0</span></div></div>
-            <div class="flex-row-item"><div>Attack <span id="statsAttack">0</span></div></div>
+            <div class="flex-row-item"><div><img src="Images/shieldSm.png"> <span id="statsDefense">0</span></div></div>
+            <div class="flex-row-item"><div><img src="Images/heartSm.png"> <span id="statsHp">100%</span></div></div>
+            <div class="flex-row-item"><div><img src="Images/coinSm.png"> <span id="statsGold">0</span></div></div>
+            <div class="flex-row-item"><div><img src="Images/swordSm.png"> <span id="statsAttack">0</span></div></div>
         </div>
     </div>
     <div class="full">
