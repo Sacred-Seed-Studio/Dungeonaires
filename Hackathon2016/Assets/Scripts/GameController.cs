@@ -23,6 +23,9 @@ public class GameController : MonoBehaviour
     public Enemy currentEnemy; //there will only ever be one enemy at a time
     public GameObject titleScreen;
 
+    public Dictionary<int, int> playerDeviceIDs; //key=playerID, value=deviceID
+    public List<int> availableIDS = new List<int> { 1,2,3,4 };
+    
     bool lootOut;
 
     public void Awake()
@@ -36,6 +39,7 @@ public class GameController : MonoBehaviour
             Destroy(gameObject);
         }
         players = new List<Player>();
+        playerDeviceIDs = new Dictionary<int, int>();
         playerPrefab = Resources.Load<GameObject>("Prefabs/Player");
     }
 
@@ -252,46 +256,75 @@ public class GameController : MonoBehaviour
 
     }
 
-    public void Setup(string playerName, PlayerClass playerClass, int color)
+    public void Setup(string playerName, PlayerClass playerClass, int color, int deviceID)
     {
         Debug.Log("Setup was called");
-        int playerID = 1;
+        int playerID = availableIDS[0];
+        availableIDS.Remove(playerID);
+        playerDeviceIDs[playerID] = deviceID;
         //this will call on player connect
         OnPlayerConnect(playerID, playerClass, color, playerName);
     }
 
-    public void Ready(int playerID)
+    public void Ready(int deviceID)
+    {
+        // if all connected players are ready, then start the game and update the game state on each phone
+        // otherwise, wait for another player to connect
+        Debug.Log(playerDeviceIDs[deviceID]);
+        GetPlayer(playerDeviceIDs[deviceID]).readyToAdventure = true;
+        bool allPlayersReady = true;   
+        foreach (Player p in players)
+        {
+            if (!p.readyToAdventure) allPlayersReady = false;
+        }
+        if (allPlayersReady)
+        {
+            var message = new
+            {
+                e = 1,
+            };
+
+            AirConsoleController.instance.UpdateState(message);
+            waitingForPlayers = false;
+        }
+    }
+
+    public void Attack(int deviceID)
+    {
+        GetPlayer(playerDeviceIDs[deviceID] - 1).attack = true;
+    }
+
+    public void Defend(int deviceID)
+    {
+        GetPlayer(playerDeviceIDs[deviceID] - 1).defend = true;
+    }
+
+    public void Loot(int deviceID)
     {
 
     }
 
-    public void Attack(int playerID)
-    {
-        players[playerID].attack = true;
-    }
-
-    public void Defend(int playerID)
-    {
-        players[playerID].defend = true;
-    }
-
-    public void Loot(int playerID)
+    public void KeepLoot(int deviceID)
     {
 
     }
 
-    public void KeepLoot(int playerID)
+    public void ShareLoot(int deviceID)
     {
 
     }
 
-    public void ShareLoot(int playerID)
-    {
-
-    }
-
-    public void Bid(int playerID, int item1Bid, int item2Bid, int item3Bid)
+    public void Bid(int deviceID, int item1Bid, int item2Bid, int item3Bid)
     {
         //add to the bid list, if it's not the length of # players wait
+    }
+
+    Player GetPlayer(int id)
+    {
+        foreach(Player p in players)
+        {
+            if (p.PlayerID == id) return p;
+        }
+        return null;
     }
 }
