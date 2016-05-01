@@ -133,7 +133,7 @@
             function ready(){ if(!readyForDungeon){ airconsole.message(AirConsole.SCREEN, {a: 2}); readyForDungeon = true; setReadyScreen("wait"); }}
             function attack(){ if(canAttack){ canAttack=false; setTimeout(function(){canAttack=true;}, throttleRate); airconsole.message(AirConsole.SCREEN, {a: 3}); } }
             function defend(){ if(canDefend){ canDefend=false; setTimeout(function(){canDefend=true;}, throttleRate); airconsole.message(AirConsole.SCREEN, {a: 4}); } }
-            function loot(){ if(canLoot){ if(canLootThrottle){ canLootThrottle=false; setTimeout(function(){canLootThrottle=true;}, throttleRate); airconsole.message(AirConsole.SCREEN, {a: 5}); } } }
+            function loot(){ if(canLoot){ if(canLootThrottle){ canLootThrottle=false; setTimeout(function(){canLootThrottle=true;}, throttleRate/2); airconsole.message(AirConsole.SCREEN, {a: 5}); } } }
             function keepLoot(){ airconsole.message(AirConsole.SCREEN, {a: 6}); }
             function shareLoot(){ airconsole.message(AirConsole.SCREEN, {a: 7}); }
             function bid(){ airconsole.message(AirConsole.SCREEN, {a: 8, b:{a:bid1, b:bid2, c:bid3}}); }
@@ -253,8 +253,7 @@
 </head>
 <body onload="init()" class="join">
     <div class="join" ontouchstart="join()">
-        <h1>Dungeonaires</h1>
-        <h2>Tap to join</h2>
+        <h1>Tap to join</h1>
     </div>
     <div class="setup">
         <input id="playerName" type="text" maxlength="11" placeholder="Jon   Snow"></input>
@@ -298,7 +297,7 @@
     </div>
     <div class="ready" ontouchstart="ready()">
         <div id="readySubscreen" class="container">
-            <h1 class="ready">Touch for Ready</h1>
+            <h1 class="ready">Tap to signal Ready</h1>
             <h1 class="wait">Waiting for your party</h1>
         </div>
     </div>

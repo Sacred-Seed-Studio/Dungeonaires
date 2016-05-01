@@ -10,7 +10,7 @@ public class Player : MonoBehaviour, IAttackable
     public int Gold { get; set; }
     public int AttackPower { get; set; }
     public int DefensePower { get; set; }
-
+    public bool Dead { get; set; }
     int currentColor;
     public int CurrentColor
     {
@@ -79,7 +79,7 @@ public class Player : MonoBehaviour, IAttackable
         {
             defendImage.enabled = false;
         }
-        if (attack && canAttack && canDefend)
+        if (attack && canAttack)
         {
             Attack();
         }

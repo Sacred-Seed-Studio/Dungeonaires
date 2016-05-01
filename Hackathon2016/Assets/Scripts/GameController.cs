@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -21,7 +22,8 @@ public class GameController : MonoBehaviour
     public bool adventuring = false, waitingForPlayers = true;
 
     public Enemy currentEnemy; //there will only ever be one enemy at a time
-    public GameObject titleScreen;
+    public GameObject titleScreen, storeScreen;
+    Text timerText;
 
     public Dictionary<int, int> playerDeviceIDs; //key=playerID, value=deviceID
     public List<int> availableIDS = new List<int> { 1, 2, 3, 4 };
@@ -42,6 +44,9 @@ public class GameController : MonoBehaviour
         players = new List<Player>();
         playerDeviceIDs = new Dictionary<int, int>();
         playerPrefab = Resources.Load<GameObject>("Prefabs/Player");
+        timerText = storeScreen.GetComponentsInChildren<Text>()[0];
+        storeScreen.SetActive(false);
+
     }
 
     void Start()
@@ -99,10 +104,14 @@ public class GameController : MonoBehaviour
 
         //Wait for all players to indicate they are ready to move forward? - send event to all players and wait for response
         //When all players are ready to move forward, the dungeon starts.
-        yield return StartCoroutine(EnterDungeon());
-        yield return StartCoroutine(StartStoreEncounter());
+        yield return StartCoroutine(EnterDungeon(1));
         AudioController.controller.PlayBackgroundSong(SongType.End);
-
+        yield return StartCoroutine(StartStoreEncounter());
+        var message2 = new
+        {
+            z = 0
+        };
+        AirConsoleController.instance.UpdateState(message2);
         adventuring = false;
         yield return null;
     }
@@ -122,6 +131,23 @@ public class GameController : MonoBehaviour
 
         }
         Debug.Log("Killed all the enemies!");
+
+        foreach (Player p in deadPlayers)
+        {
+            players.Add(p);
+        }
+        int j = deadPlayers.Count;
+        for (int k = 0; k < j; k++)
+        {
+            deadPlayers.Remove(deadPlayers[0]);
+        }
+        foreach (Player p in players)
+        {
+            p.Health = p.MaxHealth;
+            p.Dead = false;
+            p.gameObject.SetActive(true);
+        }
+        RepositionPlayers();
         //Inside a dungeon - there will be several enemies/boss and then at the end of the dungeon there will be a shop encounter
         //A dungeon is a series of encounters with enemies - no breaks in between
         yield return null;
@@ -168,11 +194,11 @@ public class GameController : MonoBehaviour
 
         lootOut = true;
         yield return new WaitForSeconds(Random.Range(treasureRange.x, treasureRange.y));
-            var message2 = new
-            {
-                l = 1
-            };
-            AirConsoleController.instance.UpdateState(message2);
+        var message2 = new
+        {
+            l = 1
+        };
+        AirConsoleController.instance.UpdateState(message2);
         while (lootOut)
         {
             chest.SetActive(true);
@@ -194,10 +220,34 @@ public class GameController : MonoBehaviour
         yield return null;
     }
 
+    float storeTime = 15f;
+
     IEnumerator StartStoreEncounter()
     {
+        storeScreen.SetActive(true);
         Debug.Log("You've reached the store!");
+        var message = new
+        {
+            p = 0
+        };
+        AirConsoleController.instance.UpdateState(message);
+        float currentTime = storeTime;
+
+        while (currentTime > 0)
+        {
+            timerText.text = currentTime.ToString();
+            currentTime -= 1;
+            yield return new WaitForSeconds(1f);
+        }
+        //TODO
+        //check the bids ?
+        //var message2 = new
+        //{
+        //    r = 0
+        //};
+        //AirConsoleController.instance.UpdateState(message2);
         //send each player a screen for bidding on store items - only the highest bid for each item will be accepted
+        storeScreen.SetActive(false);
         yield return null;
     }
 
@@ -241,7 +291,7 @@ public class GameController : MonoBehaviour
     {
         var message = new
         {
-            a = new { d = p.DefensePower, h = (p.Health / p.MaxHealth) * 100, g = p.Gold, a = p.AttackPower }
+            a = new { d = p.DefensePower, h = (int)((p.Health * 1f / p.MaxHealth * 1f) * 100), g = p.Gold, a = p.AttackPower }
         };
         AirConsoleController.instance.UpdateState(p.DeviceID, message);
     }
@@ -297,6 +347,7 @@ public class GameController : MonoBehaviour
         players.Remove(playerToKill);
         playerToKill.explosion.SetActive(true);
         playerToKill.gameObject.SetActive(false);
+        playerToKill.Dead = true;
         AudioController.controller.PlaySound(SoundType.Death);
         RepositionPlayers();
 
@@ -386,7 +437,7 @@ public class GameController : MonoBehaviour
 
         foreach (Player p in players)
         {
-            if (p.DeviceID != deviceID)
+            if (p.DeviceID != deviceID && !p.Dead)
             {
                 var message3 = new
                 {
@@ -401,6 +452,7 @@ public class GameController : MonoBehaviour
     public void KeepLoot(int deviceID)
     {
         GetPlayer(deviceID).Gold += Random.Range(lootLow, lootHigh);
+        UpdateStats(GetPlayer(deviceID));
         waitingForLootDecision = false;
     }
 
@@ -412,6 +464,7 @@ public class GameController : MonoBehaviour
             p.Gold += shareAmount;
         }
         waitingForLootDecision = false;
+        UpdateAllStats();
     }
 
     public void Bid(int deviceID, int item1Bid, int item2Bid, int item3Bid)
