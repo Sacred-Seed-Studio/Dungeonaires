@@ -529,6 +529,7 @@ public class GameController : MonoBehaviour
         if (players.Count == 0)
         {
             AudioController.controller.PlayBackgroundSong(SongType.Game);
+            endScreen.GetComponent<EndGameRank>().ShowDeadRank(deadPlayers);
             endScreen.SetActive(true);
             if (!testing)
             {
