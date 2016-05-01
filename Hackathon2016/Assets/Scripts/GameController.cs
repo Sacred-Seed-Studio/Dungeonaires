@@ -265,6 +265,12 @@ public class GameController : MonoBehaviour
         playerToKill.gameObject.SetActive(false);
         AudioController.controller.PlaySound(SoundType.Death);
         RepositionPlayers();
+
+        var message = new
+        {
+           d = 0,
+        };
+        AirConsoleController.instance.UpdateState(playerToKill.DeviceID, message);
     }
 
     public void Join(int deviceID)
