@@ -168,13 +168,13 @@ public class GameController : MonoBehaviour
 
         lootOut = true;
         yield return new WaitForSeconds(Random.Range(treasureRange.x, treasureRange.y));
-        while (lootOut)
-        {
             var message2 = new
             {
                 l = 1
             };
             AirConsoleController.instance.UpdateState(message2);
+        while (lootOut)
+        {
             chest.SetActive(true);
             //do a countdown and then randomly show the loot after 1-3 seconds (first to claim it can distribute as desired)
             Debug.Log("Waiting for loot!");
@@ -241,7 +241,7 @@ public class GameController : MonoBehaviour
     {
         var message = new
         {
-            a = new { d = p.DefensePower, h = (int)(p.Health / p.MaxHealth) * 100, g = p.Gold, a = p.AttackPower }
+            a = new { d = p.DefensePower, h = (p.Health / p.MaxHealth) * 100, g = p.Gold, a = p.AttackPower }
         };
         AirConsoleController.instance.UpdateState(p.DeviceID, message);
     }
@@ -295,6 +295,7 @@ public class GameController : MonoBehaviour
     public void KillPlayer(Player playerToKill)
     {
         players.Remove(playerToKill);
+        playerToKill.explosion.SetActive(true);
         playerToKill.gameObject.SetActive(false);
         AudioController.controller.PlaySound(SoundType.Death);
         RepositionPlayers();

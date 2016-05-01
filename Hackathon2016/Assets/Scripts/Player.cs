@@ -18,6 +18,8 @@ public class Player : MonoBehaviour, IAttackable
         set { currentColor = value; UpdateSprite(); }
     }
 
+    public GameObject explosion;
+
     public float attackCooldownTime = 1, defenseCooldownTime = 1;
 
     SpriteRenderer sr;
