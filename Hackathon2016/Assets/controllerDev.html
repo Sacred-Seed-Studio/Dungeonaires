@@ -131,7 +131,7 @@
             function setup(){ airconsole.message(AirConsole.SCREEN, {a: 1, b:{n:playerName.value ? playerName.value : "Jon Snow", c:getIDFromClass(selectedClass), r:getIDFromColor(selectedColor)}}); setReadyScreen("ready"); goToScreen("ready"); }
             function ready(){ if(!readyForDungeon){ airconsole.message(AirConsole.SCREEN, {a: 2}); readyForDungeon = true; setReadyScreen("wait"); }}
             function attack(){ if(canAttack){ console.log('attacking'); canAttack=false; setTimeout(function(){canAttack=true;}, throttleRate); airconsole.message(AirConsole.SCREEN, {a: 3}); } }
-            function defend(){ if(canDefend){ console.log('defending'); canAttack=false; setTimeout(function(){canDefend=true;}, throttleRate); airconsole.message(AirConsole.SCREEN, {a: 4}); } }
+            function defend(){ if(canDefend){ console.log('defending'); canDefend=false; setTimeout(function(){canDefend=true;}, throttleRate); airconsole.message(AirConsole.SCREEN, {a: 4}); } }
             function loot(){ if(canLoot){ airconsole.message(AirConsole.SCREEN, {a: 5}); } }
             function keepLoot(){ airconsole.message(AirConsole.SCREEN, {a: 6}); }
             function shareLoot(){ airconsole.message(AirConsole.SCREEN, {a: 7}); }
@@ -151,7 +151,6 @@
                 font-family: 'Simonetta', sans-serif;
                 color: #ddd;
                 text-align: center;
-                background-color: black;
                 box-sizing: border-box;
             }
             *, *:before, *:after { box-sizing: inherit; }
@@ -287,7 +286,7 @@
         <div id="lootSubscreen" class="container success">
             <h1 class="wait">Get Ready...</h1>
 
-            <img src="http://iconizer.net/files/Brilliant/orig/treasure.png">    
+            <img src="Images/chest.png">    
             
             <div class="success"><div ontouchstart="keepLoot()">Keep Loot</div><div ontouchstart="shareLoot()">Share Loot</div></div>
             <h1 class="success">No one will know</h1>
