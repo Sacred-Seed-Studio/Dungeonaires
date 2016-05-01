@@ -174,7 +174,7 @@
             body.dead > .stats-bar,
             body.encounter > .stats-bar,
             body.loot > .stats-bar,
-            body.shop > .stats-bar { display: block; position: absolute; bottom: 0; height: 10%; width: 100%; padding: 1%; font-size: large; color: black; background-image: url("tile.png"); background-repeat: repeat-x; }
+            body.shop > .stats-bar { display: block; position: absolute; bottom: 0; height: 10%; width: 100%; padding: 1%; font-size: large; color: #ddd; background-image: url("Images/tile.png"); background-repeat: repeat-x; }
             .stats-bar .flex-row-item { display: flex; flex-direction: column; justify-content: center; height: 100%; }
             .stats-bar img { height: 100%; width:auto; vertical-align: bottom; }
 
@@ -198,17 +198,17 @@
             body.setup > .setup { display: block; height: 100%; }
             body.setup > .setup > h1 { font-size: 30px; font-size: 6vw; margin: 10px 10px 0 10px; }
             body.setup > .setup .class-img { max-width: 10vw; max-height: 10vw; }
-            body.setup > .setup .class-img.selected { border: 5px double green; }
+            body.setup > .setup .class-img.selected { border: 5px double white; }
             body.setup > .setup .color { width: 6vw; height: 6vw; margin: 0 auto; }
             body.setup > .setup .color.selected { border: 5px double white; }
-            body.setup > .setup .color.red { background-color: red; }
-            body.setup > .setup .color.orange { background-color: orange; }
-            body.setup > .setup .color.yellow { background-color: yellow; }
-            body.setup > .setup .color.green { background-color: green; }
-            body.setup > .setup .color.blue { background-color: blue; }
-            body.setup > .setup .color.indigo { background-color: indigo; }
-            body.setup > .setup .color.violet { background-color: violet; }
-            body.setup > .setup .color.grey { background-color: grey; }
+            body.setup > .setup .color.red { background-color: #EE1C24; }
+            body.setup > .setup .color.orange { background-color: #F26522; }
+            body.setup > .setup .color.yellow { background-color: #FFDE00; }
+            body.setup > .setup .color.green { background-color: #39B54A; }
+            body.setup > .setup .color.blue { background-color: #00AEF0; }
+            body.setup > .setup .color.indigo { background-color: #8560A9; }
+            body.setup > .setup .color.violet { background-color: #ED008C; }
+            body.setup > .setup .color.grey { background-color: #7E7E7E; }
             body.setup > .setup > input { width: 60%; font-size: 16px; font-size: 3vw; padding: 5px; margin-top: 20px; text-align: center; }
             body.setup > .setup > .ready { display: flex; flex-direction: column; justify-content: center; height: 8vw; margin: 15px auto 0; }
             body.setup > .setup > .ready > div { width: 35%; margin: 0 auto; border: 2px solid white; padding: 10px; background: none; color: #eee; font-size: 3vw; }
@@ -253,16 +253,16 @@
 <body onload="init()" class="join">
     <div class="join" ontouchstart="join()">
         <h1>Dungeonaires</h1>
-        <h2>Press to join</h2>
+        <h2>Tap to join</h2>
     </div>
     <div class="setup">
         <input id="playerName" type="text" maxlength="11" placeholder="Jon   Snow"></input>
-        <h1>Choose Your Class</h1>
+        <h1>Choose Your Character</h1>
         <div class="flex-row-container">
             <div class="flex-row-item"><img class="class-img warrior" src="Images/portraitKnight.png" alt="Warrior" ontouchstart="selectClass('warrior')"></div>
             <div class="flex-row-item"><img class="class-img mage" src="Images/portraitMage.png" alt="Mage" ontouchstart="selectClass('mage')"></div>
-            <div class="flex-row-item"><img class="class-img rogue" src="http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=55969202" alt="Rogue" ontouchstart="selectClass('rogue')"></div>
-            <div class="flex-row-item"><img class="class-img archer" src="http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=55969202" alt="Archer" ontouchstart="selectClass('archer')"></div>
+            <div class="flex-row-item"><img class="class-img rogue" src="Images/portraitKnight.png" alt="Rogue" ontouchstart="selectClass('rogue')"></div>
+            <div class="flex-row-item"><img class="class-img archer" src="Images/portraitMage.png" alt="Archer" ontouchstart="selectClass('archer')"></div>
         </div>
         <h1>Choose Your Color</h1>
         <div class="flex-row-container">
