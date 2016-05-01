@@ -5,6 +5,7 @@ using System.Collections;
 public class Player : MonoBehaviour, IAttackable
 {
     public int DeviceID { get; set; }
+    public int MaxHealth { get; set; }
     public int Health { get; set; }
     public int Gold { get; set; }
     public int AttackPower { get; set; }
@@ -60,22 +61,6 @@ public class Player : MonoBehaviour, IAttackable
         canAttack = Time.time > nextAttack;
         canDefend = Time.time > nextDefend;
 
-        //if (Time.time < nextAttack)
-        //{
-        //    attackImage.enabled = false;
-        //}
-        //else
-        //{
-        //    attackImage.enabled = true;
-        //}
-        //if (Time.time < nextDefend)
-        //{
-        //    defendImage.enabled = false;
-        //}
-        //else
-        //{
-        //    defendImage.enabled = true;
-        //}
         if (canAttack)
         {
             attackImage.enabled = true;
@@ -92,7 +77,7 @@ public class Player : MonoBehaviour, IAttackable
         {
             defendImage.enabled = false;
         }
-        if (attack && canAttack)
+        if (attack && canAttack && canDefend)
         {
             Attack();
         }
@@ -100,6 +85,15 @@ public class Player : MonoBehaviour, IAttackable
         if (defend && canDefend)
         {
             Defend();
+        }
+
+        if (attack && !canAttack)
+        {
+            attack = false;
+        }
+        if (defend && !canDefend)
+        {
+            defend = false;
         }
     }
 
@@ -112,6 +106,7 @@ public class Player : MonoBehaviour, IAttackable
     public void Setup(Information info)
     {
         Health = info.health;
+        MaxHealth = info.health;
         AttackPower = info.attack;
         DefensePower = info.defense;
 

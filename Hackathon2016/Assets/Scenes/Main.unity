@@ -126,11 +126,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 137630, guid: 656333eba6380d948bb0baee8ac261d1, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22445704, guid: 656333eba6380d948bb0baee8ac261d1, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22408244, guid: 656333eba6380d948bb0baee8ac261d1, type: 2}
       propertyPath: m_RootOrder
@@ -748,7 +748,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1579226710
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -774,7 +774,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 20
   m_Sprite: {fileID: 21300000, guid: 7ca0e80802e22a640bdeb3f4e4dc24f0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1018,7 +1018,7 @@ Transform:
   m_Children:
   - {fileID: 1550213591}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
 --- !u!1 &1904566240
 GameObject:
   m_ObjectHideFlags: 0
@@ -1066,7 +1066,7 @@ MonoBehaviour:
   titleScreen: {fileID: 1876995561}
   availableIDS: 01000000020000000300000004000000
   lootOut: 0
-  chest: {fileID: 0}
+  chest: {fileID: 1579226708}
   lootLow: 50
   lootHigh: 150
 --- !u!4 &1904566242

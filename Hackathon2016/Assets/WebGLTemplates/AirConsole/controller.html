@@ -106,7 +106,7 @@
                                 switch(data.l){
                                     case 0: setLootScreen("wait"); break;
                                     case 1: setLootScreen("ready"); canLoot = true; break;
-                                    case 2: setLootScreen("success"); airconsole.message(undefined, {l:3}); break;
+                                    case 2: setLootScreen("success"); break;
                                     case 3: setLootScreen("miss"); break;
                                 }
                                 goToScreen("loot");
@@ -131,7 +131,7 @@
             function setup(){ airconsole.message(AirConsole.SCREEN, {a: 1, b:{n:playerName.value ? playerName.value : "Jon Snow", c:getIDFromClass(selectedClass), r:getIDFromColor(selectedColor)}}); setReadyScreen("ready"); goToScreen("ready"); }
             function ready(){ if(!readyForDungeon){ airconsole.message(AirConsole.SCREEN, {a: 2}); readyForDungeon = true; setReadyScreen("wait"); }}
             function attack(){ if(canAttack){ console.log('attacking'); canAttack=false; setTimeout(function(){canAttack=true;}, throttleRate); airconsole.message(AirConsole.SCREEN, {a: 3}); } }
-            function defend(){ if(canDefend){ console.log('defending'); canAttack=false; setTimeout(function(){canDefend=true;}, throttleRate); airconsole.message(AirConsole.SCREEN, {a: 4}); } }
+            function defend(){ if(canDefend){ console.log('defending'); canDefend=false; setTimeout(function(){canDefend=true;}, throttleRate); airconsole.message(AirConsole.SCREEN, {a: 4}); } }
             function loot(){ if(canLoot){ airconsole.message(AirConsole.SCREEN, {a: 5}); } }
             function keepLoot(){ airconsole.message(AirConsole.SCREEN, {a: 6}); }
             function shareLoot(){ airconsole.message(AirConsole.SCREEN, {a: 7}); }

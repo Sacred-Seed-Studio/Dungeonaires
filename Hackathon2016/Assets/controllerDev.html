@@ -106,7 +106,7 @@
                                 switch(data.l){
                                     case 0: setLootScreen("wait"); break;
                                     case 1: setLootScreen("ready"); canLoot = true; break;
-                                    case 2: setLootScreen("success"); airconsole.message(undefined, {l:3}); break;
+                                    case 2: setLootScreen("success"); break;
                                     case 3: setLootScreen("miss"); break;
                                 }
                                 goToScreen("loot");

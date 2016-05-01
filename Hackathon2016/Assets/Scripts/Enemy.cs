@@ -104,6 +104,7 @@ public class Enemy : MonoBehaviour
         sr.color = Color.white;
         nextAttack = Time.time + attackCooldownTime;
 
+        GameController.controller.UpdateAllStats();
         yield return null;
     }
     public void Defend()
