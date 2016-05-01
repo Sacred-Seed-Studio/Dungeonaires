@@ -19,6 +19,9 @@ public class Information
     public int health;
     public int attack;
     public int defense;
+
+    public EnemyClass eClass; //may not be valid
+    public PlayerClass pClass;//may not be valid
 }
 
 public enum PlayerClass
@@ -44,7 +47,7 @@ public enum EncounterType
 
 public class BidInformation
 {
-    public BidInformation(int id,int b1, int b2, int b3)
+    public BidInformation(int id, int b1, int b2, int b3)
     {
         deviceID = id;
         bid1 = b1;
@@ -63,7 +66,23 @@ public static class Helper
         Information[] e = new Information[n];
         for (int i = 0; i < n; i++)
         {
-            e[i] = GetInformation((EnemyClass)UnityEngine.Random.Range(0, Enum.GetNames(typeof(EnemyClass)).Length - 1));
+            EnemyClass eC = (EnemyClass)UnityEngine.Random.Range(0, Enum.GetNames(typeof(EnemyClass)).Length - 1);
+            e[i] = GetInformation(eC);
+            e[i].eClass = eC;
+        }
+
+        return e;
+    }
+
+    public static Information[] GetProgression(int n = 3)
+    {
+        //return an array with n enemies
+        Information[] e = new Information[3];
+
+        for (int i = 0; i < 3; i++)
+        {
+            e[i] = GetInformation((EnemyClass)i);
+            e[i].eClass = (EnemyClass)i;
         }
 
         return e;
@@ -88,9 +107,9 @@ public static class Helper
             //case EnemyClass.Enemy1: return new Information(1, 1, 100, 25, 5);
             //case EnemyClass.Enemy2: return new Information(3f, 1, 125, 30, 4);
             //case EnemyClass.Enemy3: return new Information(5f, 1, 80, 15, 3);
-            case EnemyClass.Enemy1: return new Information(1, 1, 100, 10, 5);
-            case EnemyClass.Enemy2: return new Information(3f, 1, 125, 10, 4);
-            case EnemyClass.Enemy3: return new Information(5f, 1, 80, 10, 3);
+            case EnemyClass.Enemy1: return new Information(3f, 1, 75, 5, 5);
+            case EnemyClass.Enemy2: return new Information(2f, 1, 100, 8, 4);
+            case EnemyClass.Enemy3: return new Information(2f, 1, 150, 10, 3);
         }
     }
 }

@@ -111,9 +111,53 @@ public class GameController : MonoBehaviour
 
         //Wait for all players to indicate they are ready to move forward? - send event to all players and wait for response
         //When all players are ready to move forward, the dungeon starts.
-        yield return StartCoroutine(EnterDungeon(1));
+        yield return StartCoroutine(EnterDungeon(3));
         AudioController.controller.PlayBackgroundSong(SongType.End);
         yield return StartCoroutine(StartStoreEncounter());
+
+        //Get ranking ready
+        int goldRank1 = 0, goldRank2 = 0, goldRank3 = 0, goldRank4 = 0;
+        Player rank1 = players[0], rank2 = players[0], rank3 = players[0], rank4 = players[0];
+        foreach (Player p in players)
+        {
+            if (p.Gold > goldRank1)
+            {
+                goldRank1 = p.Gold;
+                rank1 = p;
+            }
+        }
+        foreach (Player p in players)
+        {
+            if (p.Gold > goldRank2 && p != rank1)
+            {
+                goldRank2 = p.Gold;
+                rank2 = p;
+            }
+        }
+        foreach (Player p in players)
+        {
+            if (p.Gold > goldRank3 && p != rank1 && p != rank2)
+            {
+                goldRank3 = p.Gold;
+                rank3 = p;
+            }
+        }
+        foreach (Player p in players)
+        {
+            if (p != rank1 && p != rank2 && p != rank3)
+            {
+                goldRank4 = p.Gold;
+                rank4 = p;
+            }
+        }
+        switch (players.Count)
+        {
+            case 1: endScreen.GetComponent<EndGameRank>().ShowRank(new Player[] { rank1 }); break;
+            case 2: endScreen.GetComponent<EndGameRank>().ShowRank(new Player[] { rank1, rank2 }); break;
+            case 3: endScreen.GetComponent<EndGameRank>().ShowRank(new Player[] { rank1, rank2, rank3 }); break;
+            case 4: endScreen.GetComponent<EndGameRank>().ShowRank(new Player[] { rank1, rank2, rank3, rank4 }); break;
+        }
+
         endScreen.SetActive(true);
         if (!testing)
         {
@@ -128,9 +172,11 @@ public class GameController : MonoBehaviour
         yield return null;
     }
 
+
+
     IEnumerator EnterDungeon(int numberOfEnemies = 3)
     {
-        Information[] enemies = Helper.GetRandomEnemies(numberOfEnemies);
+        Information[] enemies = Helper.GetProgression(numberOfEnemies);
 
         Debug.Log("Entering dungeon");
         for (int i = 0; i < numberOfEnemies; i++)
@@ -138,6 +184,7 @@ public class GameController : MonoBehaviour
             //Set up currentEnemy to the next enemy
             currentEnemy.gameObject.SetActive(true);
             currentEnemy.Setup(enemies[i]);
+            currentEnemy.enemyClass = enemies[i].eClass;
             Debug.Log("Enemy " + currentEnemy.isActiveAndEnabled + currentEnemy.name);
             yield return StartCoroutine(StartEnemyEncounter());
 
@@ -202,6 +249,7 @@ public class GameController : MonoBehaviour
     {
         Debug.Log("Battle is over!");
         chest.GetComponent<SpriteRenderer>().sprite = chestClosed;
+        chest.transform.GetChild(0).gameObject.SetActive(false);
 
         if (!testing)
         {
@@ -267,6 +315,7 @@ public class GameController : MonoBehaviour
             currentTime -= 1;
             yield return new WaitForSeconds(1f);
         }
+        timerText.text = "Processing bids...";
 
         //Request bids from the phones and then wait for all the responses
         if (!testing)
@@ -323,6 +372,7 @@ public class GameController : MonoBehaviour
         {
             //Only items with a single high bid != 0
             highBidder1.DefensePower += 5;
+            highBidder1.Gold -= highBid1;
             UpdateStats(highBidder1);
         }
         //Check item 2:
@@ -334,6 +384,7 @@ public class GameController : MonoBehaviour
         {
             //Only items with a single high bid != 0
             highBidder2.MaxHealth += 20;
+            highBidder2.Gold -= highBid2;
             UpdateStats(highBidder2);
         }
         //Check item 3:
@@ -345,8 +396,10 @@ public class GameController : MonoBehaviour
         {
             //Only items with a single high bid != 0
             highBidder3.AttackPower += 5;
+            highBidder3.Gold -= highBid3;
             UpdateStats(highBidder3);
         }
+        timerText.text = "Bids processed!";
 
         yield return new WaitForSeconds(5f);
         if (!testing)
@@ -566,13 +619,23 @@ public class GameController : MonoBehaviour
     public void Attack(int deviceID)
     {
         Debug.Log("Attacking");
-        GetPlayer(deviceID).attack = true;
+        Player p = GetPlayer(deviceID);
+        if (p != null)
+        {
+            p.attack = true;
+        }
+        //GetPlayer(deviceID).attack = true;
     }
 
     public void Defend(int deviceID)
     {
         Debug.Log("Defending");
-        GetPlayer(deviceID).defend = true;
+        Player p = GetPlayer(deviceID);
+        if (p != null)
+        {
+            p.defend = true;
+        }
+        //GetPlayer(deviceID).defend = true;
     }
 
     public int lootLow = 50, lootHigh = 150;

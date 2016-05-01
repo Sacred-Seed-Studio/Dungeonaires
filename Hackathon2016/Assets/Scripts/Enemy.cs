@@ -4,6 +4,8 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour
 {
+    public EnemyClass enemyClass;
+
     public float attackCooldownTime = 1, defenseCooldownTime = 1;
 
     public int Health { get; set; }
@@ -19,6 +21,8 @@ public class Enemy : MonoBehaviour
     Text nameText;
 
     SpriteRenderer sr;
+
+    public Sprite[] enemySprites;
 
     public string NameText
     {
@@ -60,6 +64,8 @@ public class Enemy : MonoBehaviour
 
         healthSlider.maxValue = Health;
         healthSlider.value = Health;
+        enemyClass = info.eClass;
+        sr.sprite = enemySprites[(int)enemyClass];
     }
 
     float attackDelay = 0.5f;
