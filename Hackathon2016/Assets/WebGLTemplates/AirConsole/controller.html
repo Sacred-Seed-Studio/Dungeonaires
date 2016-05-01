@@ -9,6 +9,22 @@
             function $(selector){ return document.querySelectorAll(selector); }
             function $1(selector){ return document.querySelector(selector); }
 
+        // Debounce
+            function debounce(func, wait, immediate) {
+                var timeout;
+                return function() {
+                    var context = this, args = arguments;
+                    var later = function() {
+                        timeout = null;
+                        if (!immediate) func.apply(context, args);
+                    };
+                    var callNow = immediate && !timeout;
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                    if (callNow) func.apply(context, args);
+                };
+            };
+
         // Game Variables
             var readyForDungeon = false;
             var canLoot = false;
@@ -17,6 +33,7 @@
             var bid1 = bid2 = bid3 = 0;
             var inGame = false;
             var askedToJoin = false;
+            var debounceRate = 200;
 
         // Setup Selection Helpers
             function selectColor(color){
@@ -133,6 +150,9 @@
             function shareLoot(){ airconsole.message(AirConsole.SCREEN, {a: 7}); }
             function bid(){ airconsole.message(AirConsole.SCREEN, {a: 8, b:{a:bid1, b:bid2, c:bid3}}); }
 
+            var attack = debounce(function(){ console.log('got through a'); attack(); }, debounceRate );
+            var defend = debounce(function(){ console.log('got through d'); defend(); }, debounceRate );
+
     </script>
     <style type="text/css">
         /* Basics */
@@ -243,10 +263,11 @@
             body.shop > .shop > .flex-row-container > .flex-row-item .container img { height: 75%; width: auto; max-width: 100%; }
             body.shop > .shop > .flex-row-container > .flex-row-item .flex-row-item { font-size: 5vw; height: 25%; display: flex; flex-direction: column; justify-content: center; border: 1px solid white;}
     </style>
+    <title>Dungeonaires</title>
 </head>
 <body onload="init()" class="join">
     <div class="join" ontouchstart="join()">
-        <h1>Couch RPG</h1>
+        <h1>Dungeonaires</h1>
         <h2>Press to join</h2>
     </div>
     <div class="setup">
@@ -273,8 +294,8 @@
     </div>
     <div class="encounter">
         <div class="flex-row-container">
-            <div class="flex-row-item" ontouchstart="defend()"><img src="http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=55969202"></div>
-            <div class="flex-row-item" ontouchstart="attack()"><img src="http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=55969202"></div>
+            <div class="flex-row-item" ontouchstart="defend()"><img src="shieldButton.png"></div>
+            <div class="flex-row-item" ontouchstart="attack()"><img src="swordButton.png"></div>
         </div>
     </div>
     <div class="loot" ontouchstart="loot()">
@@ -306,7 +327,7 @@
         <div class="flex-row-container">
             <div class="flex-row-item">
                 <div class="container">
-                    <img src="http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=55969202">
+                    <img src="shieldButton.png">
                     <div class="flex-row-container">
                         <div class="flex-row-item" ontouchstart="incrementBid(1,-1)">-</div>
                         <div class="flex-row-item" id="bid1Element">0</div>
@@ -316,7 +337,7 @@
             </div>
             <div class="flex-row-item">
                 <div class="container">
-                    <img src="http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=55969202">
+                    <img src="shieldButton.png">
                     <div class="flex-row-container">
                         <div class="flex-row-item" ontouchstart="incrementBid(2,-1)">-</div>
                         <div class="flex-row-item" id="bid2Element">0</div>
@@ -326,7 +347,7 @@
             </div>
             <div class="flex-row-item">
                 <div class="container">
-                    <img src="http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=55969202">
+                    <img src="swordButton.png">
                     <div class="flex-row-container">
                         <div class="flex-row-item" ontouchstart="incrementBid(3,-1)">-</div>
                         <div class="flex-row-item" id="bid3Element">0</div>
