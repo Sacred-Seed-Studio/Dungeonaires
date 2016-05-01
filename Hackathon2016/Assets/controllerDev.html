@@ -9,22 +9,6 @@
             function $(selector){ return document.querySelectorAll(selector); }
             function $1(selector){ return document.querySelector(selector); }
 
-        // Debounce
-            function debounce(func, wait, immediate) {
-                var timeout;
-                return function() {
-                    var context = this, args = arguments;
-                    var later = function() {
-                        timeout = null;
-                        if (!immediate) func.apply(context, args);
-                    };
-                    var callNow = immediate && !timeout;
-                    clearTimeout(timeout);
-                    timeout = setTimeout(later, wait);
-                    if (callNow) func.apply(context, args);
-                };
-            };
-
         // Game Variables
             var readyForDungeon = false;
             var canLoot = false;
@@ -33,7 +17,9 @@
             var bid1 = bid2 = bid3 = 0;
             var inGame = false;
             var askedToJoin = false;
-            var debounceRate = 200;
+            var throttleRate = 250;
+            var canAttack = true;
+            var canDefend = true;
 
         // Setup Selection Helpers
             function selectColor(color){
@@ -119,7 +105,7 @@
                                 switch(data.l){
                                     case 0: setLootScreen("wait"); break;
                                     case 1: setLootScreen("ready"); canLoot = true; break;
-                                    case 2: setLootScreen("success"); break;
+                                    case 2: setLootScreen("success"); airconsole.message(undefined, {l:3}); break;
                                     case 3: setLootScreen("miss"); break;
                                 }
                                 goToScreen("loot");
@@ -143,15 +129,12 @@
             function join(){ if(!askedToJoin){ airconsole.message(AirConsole.SCREEN, {a: 0}); askedToJoin = true; } }
             function setup(){ airconsole.message(AirConsole.SCREEN, {a: 1, b:{n:playerName.value ? playerName.value : "Jon Snow", c:getIDFromClass(selectedClass), r:getIDFromColor(selectedColor)}}); setReadyScreen("ready"); goToScreen("ready"); }
             function ready(){ if(!readyForDungeon){ airconsole.message(AirConsole.SCREEN, {a: 2}); readyForDungeon = true; setReadyScreen("wait"); }}
-            function attack(){ airconsole.message(AirConsole.SCREEN, {a: 3}); }
-            function defend(){ airconsole.message(AirConsole.SCREEN, {a: 4}); }
+            function attack(){ if(canAttack){ console.log('attacking'); canAttack=false; setTimeout(function(){canAttack=true;}, throttleRate); airconsole.message(AirConsole.SCREEN, {a: 3}); } }
+            function defend(){ if(canDefend){ console.log('defending'); canAttack=false; setTimeout(function(){canDefend=true;}, throttleRate); airconsole.message(AirConsole.SCREEN, {a: 4}); } }
             function loot(){ if(canLoot){ airconsole.message(AirConsole.SCREEN, {a: 5}); } }
             function keepLoot(){ airconsole.message(AirConsole.SCREEN, {a: 6}); }
             function shareLoot(){ airconsole.message(AirConsole.SCREEN, {a: 7}); }
             function bid(){ airconsole.message(AirConsole.SCREEN, {a: 8, b:{a:bid1, b:bid2, c:bid3}}); }
-
-            var attack = debounce(function(){ console.log('got through a'); attack(); }, debounceRate );
-            var defend = debounce(function(){ console.log('got through d'); defend(); }, debounceRate );
 
     </script>
     <style type="text/css">
@@ -239,10 +222,10 @@
             body.loot > .loot > .container:not(.success) > .success,
             body.loot > .loot > .container:not(.miss) > .miss { display: none; }
             body.loot > .loot > .container.wait > .wait,
-            body.loot > .loot > .container.success > .success,
             body.loot > .loot > .container.miss > .miss { display: block; font-size: 50px; font-size: 10vw; margin: 10px; }
+            body.loot > .loot > .container.success > .success { display: block; font-size: 30px; font-size: 6vw; margin: 10px; }
             body.loot > .loot > .container.ready > img { display: block; height: 100%; width: auto; margin: 0 auto; }
-            body.loot > .loot > .container.success > .success > div { padding: 5px; font-size: 5vw; margin: 2vw; min-width: 20vw; }
+            body.loot > .loot > .container.success > .success > div { padding: 20px; font-size: 40px; font-size: 7vw; margin: 2vw; min-width: 20vw; display: inline-block; border: 1px solid white; }
 
         /* Ready div */
             body.ready > .ready > .container { display: flex; flex-direction: column; justify-content: center; height: 100%; }
@@ -304,8 +287,8 @@
 
             <img src="http://iconizer.net/files/Brilliant/orig/treasure.png">    
             
-            <h1 class="success">You got the loot! Share it?</h1>
-            <div class="success"><div ontouchstart="keepLoot()">No</div><div ontouchstart="shareLoot()">Yes</div></div>
+            <div class="success"><div ontouchstart="keepLoot()">Keep Loot</div><div ontouchstart="shareLoot()">Share Loot</div></div>
+            <h1 class="success">No one will know</h1>
 
             <h1 class="miss">You didn't get the loot, hopefully they share it!</h1>
         </div>
