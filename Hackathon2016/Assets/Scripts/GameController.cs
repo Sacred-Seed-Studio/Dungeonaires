@@ -211,7 +211,6 @@ public class GameController : MonoBehaviour
                 players[0].transform.position = startPlayerPosition.position;
                 players[1].transform.position = centerPoint;
                 players[2].transform.position = endPlayerPosition.position; break;
-            default:
             case 4:
                 players[0].transform.position = startPlayerPosition.position;
                 players[1].transform.position = centerPoint + ((startPlayerPosition.position - centerPoint) / 2f) + delta;
@@ -245,7 +244,6 @@ public class GameController : MonoBehaviour
     public void KillPlayer(Player playerToKill)
     {
         players.Remove(playerToKill);
-        deadPlayers.Add(playerToKill);
         playerToKill.gameObject.SetActive(false);
         AudioController.controller.PlaySound(SoundType.Death);
         RepositionPlayers();

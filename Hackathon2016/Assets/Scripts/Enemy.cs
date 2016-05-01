@@ -95,8 +95,9 @@ public class Enemy : MonoBehaviour
         }
         foreach (Player p in GameController.controller.deadPlayers)
         {
-            GameController.controller.players.Remove(p);
-            p.gameObject.SetActive(false);
+            GameController.controller.KillPlayer(p);
+            //GameController.controller.players.Remove(p);
+            //p.gameObject.SetActive(false);
         }
 
         //hit all players
