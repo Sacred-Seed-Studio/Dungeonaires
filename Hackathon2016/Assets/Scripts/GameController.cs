@@ -22,7 +22,7 @@ public class GameController : MonoBehaviour
     public bool adventuring = false, waitingForPlayers = true;
 
     public Enemy currentEnemy; //there will only ever be one enemy at a time
-    public GameObject titleScreen, storeScreen;
+    public GameObject titleScreen, storeScreen, endScreen;
     Text timerText;
 
     public Dictionary<int, int> playerDeviceIDs; //key=playerID, value=deviceID
@@ -46,6 +46,7 @@ public class GameController : MonoBehaviour
         playerPrefab = Resources.Load<GameObject>("Prefabs/Player");
         timerText = storeScreen.GetComponentsInChildren<Text>()[0];
         storeScreen.SetActive(false);
+        endScreen.SetActive(false);
 
     }
 
@@ -107,6 +108,7 @@ public class GameController : MonoBehaviour
         yield return StartCoroutine(EnterDungeon(1));
         AudioController.controller.PlayBackgroundSong(SongType.End);
         yield return StartCoroutine(StartStoreEncounter());
+        endScreen.SetActive(true);
         var message2 = new
         {
             z = 0
@@ -346,16 +348,35 @@ public class GameController : MonoBehaviour
     {
         players.Remove(playerToKill);
         playerToKill.explosion.SetActive(true);
-        playerToKill.gameObject.SetActive(false);
         playerToKill.Dead = true;
         AudioController.controller.PlaySound(SoundType.Death);
-        RepositionPlayers();
+        StartCoroutine(TurnOffPlayer(playerToKill));
 
-        var message = new
+        if (players.Count == 0)
         {
-            d = 0
-        };
-        AirConsoleController.instance.UpdateState(playerToKill.DeviceID, message);
+            AudioController.controller.PlayBackgroundSong(SongType.Game);
+            endScreen.SetActive(true);
+            var message = new
+            {
+                x = 0
+            };
+            AirConsoleController.instance.UpdateState(message);
+        }
+        else
+        {
+            var message = new
+            {
+                d = 0
+            };
+            AirConsoleController.instance.UpdateState(playerToKill.DeviceID, message);
+        }
+    }
+    IEnumerator TurnOffPlayer(Player playerToKill)
+    {
+        yield return new WaitForSeconds(0.75f);
+        playerToKill.gameObject.SetActive(false);
+        RepositionPlayers();
+        yield return null;
     }
 
     public void Join(int deviceID)
@@ -439,6 +460,7 @@ public class GameController : MonoBehaviour
         {
             if (p.DeviceID != deviceID && !p.Dead)
             {
+                Debug.Log(p.Dead);
                 var message3 = new
                 {
                     l = 3

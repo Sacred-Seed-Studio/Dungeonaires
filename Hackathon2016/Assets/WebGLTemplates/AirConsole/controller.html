@@ -118,6 +118,10 @@
                             else if (data.hasOwnProperty('p')){ bid1 = bid2 = bid3 = 0; updateBidNumbers(); goToScreen('shop'); }
                             // send bid data
                             else if (data.hasOwnProperty('b')){ bid(); setReadyScreen("wait"); goToScreen("ready"); }
+                            // game complete
+                            else if (data.hasOwnProperty('z')){ goToScreen('complete'); }
+                            // game over
+                            else if (data.hasOwnProperty('x')){ goToScreen('fail'); }
                         }
                         // go to setup screen
                         if (data.hasOwnProperty("s")){ goToScreen("setup"); inGame = true; }
@@ -168,6 +172,8 @@
             body:not(.loot) > .loot,
             body:not(.shop) > .shop,
             body:not(.full) > .full,
+            body:not(.complete) > .complete,
+            body:not(.fail) > .fail,
             body > .stats-bar { display: none; }
 
         /* Show stats bar on right divs */
@@ -194,6 +200,14 @@
         /* Full div */
             body.full > .full { display: flex; flex-direction: column; justify-content: center; height: 100%; }
             body.full > .full > h1 { font-size: 50px; font-size: 10vw; margin: 10px; }
+
+        /* Complete div */
+            body.complete > .complete { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+            body.complete > .complete > h1 { font-size: 50px; font-size: 10vw; margin: 10px; }
+        
+        /* fail div */
+            body.fail > .fail { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+            body.fail > .fail > h1 { font-size: 50px; font-size: 10vw; margin: 10px; }
 
         /* Setup div */
             body.setup > .setup { display: block; height: 100%; }
@@ -352,6 +366,12 @@
     </div>
     <div class="full">
         <h1>Too many players</h1>
+    </div>
+    <div class="complete">
+        <h1>Adventure Complete</h1>
+    </div>
+    <div class="fail">
+        <h1>All Dungeonaires have perished</h1>
     </div>
 </body>
 </html>

@@ -172,7 +172,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &96996881
 Transform:
   m_ObjectHideFlags: 0
@@ -315,6 +315,10 @@ Prefab:
       propertyPath: fighterDefend
       value: 
       objectReference: {fileID: 8300000, guid: 0ac90e98882c6bf43a88362ee716be8d, type: 3}
+    - target: {fileID: 11430654, guid: 2a554f42194563745a0aec5aa9c38214, type: 2}
+      propertyPath: gameSong
+      value: 
+      objectReference: {fileID: 8300000, guid: cbec04f736960f74aabca19c26ae3ddc, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2a554f42194563745a0aec5aa9c38214, type: 2}
   m_IsPrefabParent: 0
@@ -1626,7 +1630,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1876995562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1701,6 +1705,7 @@ MonoBehaviour:
   currentEnemy: {fileID: 1085299602}
   titleScreen: {fileID: 1876995561}
   storeScreen: {fileID: 1137631519}
+  endScreen: {fileID: 96996879}
   availableIDS: 01000000020000000300000004000000
   lootOut: 0
   chest: {fileID: 1579226708}
