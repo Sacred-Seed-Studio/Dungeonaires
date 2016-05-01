@@ -131,6 +131,11 @@ public class GameController : MonoBehaviour
     IEnumerator StartEnemyEncounter()
     {
         Debug.Log("A wild pikachu has appeared! " + currentEnemy.Health);
+        var message = new
+        {
+            e = 0
+        };
+        AirConsoleController.instance.UpdateState(message);
         // The enemy will appear and be setup
         // Players can attack and defend (based on their cooldowns)
         // The enemy will attack according to it's schedule
@@ -148,6 +153,8 @@ public class GameController : MonoBehaviour
         yield return null;
     }
 
+    public bool waitingForLootDecision;
+
     Vector2 treasureRange = new Vector2(1f, 3f);
     IEnumerator BattleEnd()
     {
@@ -155,17 +162,17 @@ public class GameController : MonoBehaviour
 
         var message = new
         {
-            l = 0,
+            l = 0
         };
         AirConsoleController.instance.UpdateState(message);
 
         lootOut = true;
+        yield return new WaitForSeconds(Random.Range(treasureRange.x, treasureRange.y));
         while (lootOut)
         {
-            yield return new WaitForSeconds(Random.Range(treasureRange.x, treasureRange.y));
             var message2 = new
             {
-                l = 1,
+                l = 1
             };
             AirConsoleController.instance.UpdateState(message2);
             chest.SetActive(true);
@@ -173,6 +180,14 @@ public class GameController : MonoBehaviour
             Debug.Log("Waiting for loot!");
             yield return null;
         }
+        //Someone has the loot
+        waitingForLootDecision = true;
+        while (waitingForLootDecision)
+        {
+            //
+            yield return null;
+        }
+
         chest.SetActive(false);
 
         //show the loot and let the players fight for it!
@@ -211,6 +226,24 @@ public class GameController : MonoBehaviour
         players[players.Count - 1].Setup(Helper.GetInformation(playerClass));
 
         RepositionPlayers();
+        UpdateStats(players[players.Count - 1]);
+    }
+
+    public void UpdateAllStats()
+    {
+        foreach (Player p in players)
+        {
+            UpdateStats(p);
+        }
+    }
+
+    public void UpdateStats(Player p)
+    {
+        var message = new
+        {
+            a = new { d = p.DefensePower, h = (int)(p.Health / p.MaxHealth) * 100, g = p.Gold, a = p.AttackPower }
+        };
+        AirConsoleController.instance.UpdateState(p.DeviceID, message);
     }
 
     Vector3 centerPoint, delta;
@@ -268,7 +301,7 @@ public class GameController : MonoBehaviour
 
         var message = new
         {
-           d = 0,
+            d = 0
         };
         AirConsoleController.instance.UpdateState(playerToKill.DeviceID, message);
     }
@@ -280,7 +313,7 @@ public class GameController : MonoBehaviour
             //connect the player
             var message = new
             {
-                s = 1,
+                s = 1
             };
             AirConsoleController.instance.UpdateState(deviceID, message);
         }
@@ -289,7 +322,7 @@ public class GameController : MonoBehaviour
             //tell them to go home
             var message = new
             {
-                f = 1,
+                f = 1
             };
             AirConsoleController.instance.UpdateState(deviceID, message);
         }
@@ -319,7 +352,7 @@ public class GameController : MonoBehaviour
         {
             var message = new
             {
-                e = 1,
+                e = 1
             };
 
             AirConsoleController.instance.UpdateState(message);
@@ -329,11 +362,13 @@ public class GameController : MonoBehaviour
 
     public void Attack(int deviceID)
     {
+        Debug.Log("Attacking");
         GetPlayer(deviceID).attack = true;
     }
 
     public void Defend(int deviceID)
     {
+        Debug.Log("Defending");
         GetPlayer(deviceID).defend = true;
     }
 
@@ -344,14 +379,28 @@ public class GameController : MonoBehaviour
         lootOut = false;
         var message = new
         {
-            l = 2,
+            l = 2
         };
         AirConsoleController.instance.UpdateState(deviceID, message);
+
+        foreach (Player p in players)
+        {
+            if (p.DeviceID != deviceID)
+            {
+                var message3 = new
+                {
+                    l = 3
+                };
+                AirConsoleController.instance.UpdateState(p.DeviceID, message3);
+            }
+        }
+
     }
 
     public void KeepLoot(int deviceID)
     {
         GetPlayer(deviceID).Gold += Random.Range(lootLow, lootHigh);
+        waitingForLootDecision = false;
     }
 
     public void ShareLoot(int deviceID)
@@ -361,7 +410,7 @@ public class GameController : MonoBehaviour
         {
             p.Gold += shareAmount;
         }
-
+        waitingForLootDecision = false;
     }
 
     public void Bid(int deviceID, int item1Bid, int item2Bid, int item3Bid)
