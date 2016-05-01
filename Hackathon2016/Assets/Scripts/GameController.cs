@@ -58,25 +58,25 @@ public class GameController : MonoBehaviour
             playerID++;
         }
 
-        foreach (Player p in players)
-        {
-            int id = p.PlayerID + 1;
-            if (Input.GetButtonDown("Player" + id + "Attack"))
-            {
-                p.attack = true;
-            }
-            else if (Input.GetButtonDown("Player" + id + "Defend"))
-            {
-                p.defend = true;
-            }
-        }
+        //foreach (Player p in players)
+        //{
+        //    int id = p.PlayerID + 1;
+        //    if (Input.GetButtonDown("Player" + id + "Attack"))
+        //    {
+        //        p.attack = true;
+        //    }
+        //    else if (Input.GetButtonDown("Player" + id + "Defend"))
+        //    {
+        //        p.defend = true;
+        //    }
+        //}
         //Input will be coming from somewhere else (the phones)
     }
 
     IEnumerator WaitForPlayers()
     {
         titleScreen.SetActive(true);
-        while (players.Count != 4 && waitingForPlayers)
+        while (waitingForPlayers)
         {
             //Debug.Log("Waiting for more players to join!");
             //wait for new players to join (either 4, or all players have indicated they are ready to go)
@@ -177,7 +177,7 @@ public class GameController : MonoBehaviour
         OnPlayerConnect(newPlayerId, GetClass(playerClass), color, playerName);
     }
 
-    public void OnPlayerConnect(int newPlayerId, PlayerClass playerClass, int color, string playerName)
+    public void OnPlayerConnect(int deviceID, PlayerClass playerClass, int color, string playerName)
     {
         // If the title screen is alive and well, drop it 
         if (titleScreen.activeInHierarchy && !titleScreen.GetComponent<TitleScreenDrop>().dropping)
@@ -187,7 +187,7 @@ public class GameController : MonoBehaviour
         players.Add(Instantiate<GameObject>(playerPrefab).GetComponent<Player>());
         //players[players.Count - 1].name = "Player" + playerID;
         players[players.Count - 1].NameText = playerName;
-        players[players.Count - 1].PlayerID = newPlayerId;
+        players[players.Count - 1].DeviceID = deviceID;
         players[players.Count - 1].CurrentColor = color;
         players[players.Count - 1].PClass = playerClass;
         players[players.Count - 1].Setup(Helper.GetInformation(playerClass));
@@ -251,27 +251,43 @@ public class GameController : MonoBehaviour
         RepositionPlayers();
     }
 
-    public void Join()
+    public void Join(int deviceID)
     {
-
+        if (players.Count < 4)
+        {
+            //connect the player
+            var message = new
+            {
+                s = 1,
+            };
+            AirConsoleController.instance.UpdateState(deviceID, message);
+        }
+        else
+        {
+            //tell them to go home
+            var message = new
+            {
+                f = 1,
+            };
+            AirConsoleController.instance.UpdateState(deviceID, message);
+        }
     }
 
     public void Setup(string playerName, PlayerClass playerClass, int color, int deviceID)
     {
         Debug.Log("Setup was called");
-        int playerID = availableIDS[0];
-        availableIDS.Remove(playerID);
-        playerDeviceIDs[playerID] = deviceID;
+        //int playerID = availableIDS[0];
+        //availableIDS.Remove(playerID);
+        //playerDeviceIDs[playerID] = deviceID;
         //this will call on player connect
-        OnPlayerConnect(playerID, playerClass, color, playerName);
+        OnPlayerConnect(deviceID, playerClass, color, playerName);
     }
 
     public void Ready(int deviceID)
     {
         // if all connected players are ready, then start the game and update the game state on each phone
         // otherwise, wait for another player to connect
-        Debug.Log(playerDeviceIDs[deviceID]);
-        GetPlayer(playerDeviceIDs[deviceID]).readyToAdventure = true;
+        GetPlayer(deviceID).readyToAdventure = true;
         bool allPlayersReady = true;   
         foreach (Player p in players)
         {
@@ -291,12 +307,12 @@ public class GameController : MonoBehaviour
 
     public void Attack(int deviceID)
     {
-        GetPlayer(playerDeviceIDs[deviceID] - 1).attack = true;
+        GetPlayer(deviceID).attack = true;
     }
 
     public void Defend(int deviceID)
     {
-        GetPlayer(playerDeviceIDs[deviceID] - 1).defend = true;
+        GetPlayer(deviceID).defend = true;
     }
 
     public void Loot(int deviceID)
@@ -323,7 +339,7 @@ public class GameController : MonoBehaviour
     {
         foreach(Player p in players)
         {
-            if (p.PlayerID == id) return p;
+            if (p.DeviceID == id) return p;
         }
         return null;
     }

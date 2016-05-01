@@ -6,6 +6,7 @@ public class TitleScreenDrop : MonoBehaviour
     public float speed = 1f;
     public bool drop;
     public bool dropping;
+    public float dropLevel = -800f;
 
     void Update()
     {
@@ -23,7 +24,7 @@ public class TitleScreenDrop : MonoBehaviour
     IEnumerator Drop()
     {
         dropping = true;
-        while (transform.position.y > -430f)
+        while (transform.position.y > dropLevel)
         {
             transform.position = (Vector2)transform.position + Vector2.down * speed;
             //yield return new WaitForSeconds(1f);

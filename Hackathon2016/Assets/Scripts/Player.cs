@@ -4,7 +4,7 @@ using System.Collections;
 
 public class Player : MonoBehaviour, IAttackable
 {
-    public int PlayerID { get; set; }
+    public int DeviceID { get; set; }
     public int Health { get; set; }
     public int Gold { get; set; }
     public int AttackPower { get; set; }
@@ -111,7 +111,6 @@ public class Player : MonoBehaviour, IAttackable
 
     public void Setup(Information info)
     {
-
         Health = info.health;
         AttackPower = info.attack;
         DefensePower = info.defense;

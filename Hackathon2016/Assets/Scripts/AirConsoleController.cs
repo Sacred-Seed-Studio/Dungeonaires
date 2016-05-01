@@ -56,7 +56,7 @@ public class AirConsoleController : MonoBehaviour
         {
             case 0:
                 Debug.Log("Join.");
-                GameController.controller.Join();
+                GameController.controller.Join(device_id);
                 break;
             case 1:
                 Debug.Log("Setup");
@@ -140,6 +140,11 @@ public class AirConsoleController : MonoBehaviour
     public void UpdateState(object data)
     {
         AirConsole.instance.Broadcast(data);
+    }
+
+    public void UpdateState(int deviceId, object data)
+    {
+        AirConsole.instance.Message(deviceId, data);
     }
 
     void StartGame()
